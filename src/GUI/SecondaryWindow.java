@@ -9,9 +9,11 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
@@ -91,6 +93,20 @@ public class SecondaryWindow extends JFrame{
 		JPanel rightPanel = new JPanel();
 		inferiorPanel.add(rightPanel);
 		
+		JLabel falsosPositivos = new JLabel ("falsosPositivos");
+		leftPanel.add(falsosPositivos);
+		
+		JTextField valorFp= new JTextField(3);
+		valorFp.setEditable(false);
+		leftPanel.add(valorFp);
+		
+		JLabel falsosNegativos= new JLabel ("falsoNegativos");
+		leftPanel.add(falsosNegativos);
+		
+		JTextField valorFn= new JTextField(3);
+		valorFp.setEditable(false);
+		leftPanel.add(valorFn);
+		
 		JButton visual = new JButton("Visualizar Gráfico");
 		rightPanel.add(visual);
 		visual.addActionListener(new ActionListener() {
@@ -116,6 +132,11 @@ public class SecondaryWindow extends JFrame{
 				
 			}
 		});
+		
+		JButton avaliarConfig = new JButton("Avaliar Configuração");
+		rightPanel.add(avaliarConfig);
+		//falta listener
+		
 		
 	}
 	

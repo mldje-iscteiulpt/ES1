@@ -78,7 +78,7 @@ public class PrimaryWindow extends JFrame {
 		 * Painel inferior
 		 */
 		JPanel inferiorPanel = new JPanel();
-		inferiorPanel.setLayout(new GridLayout(0, 2));
+		inferiorPanel.setLayout(new GridLayout(0, 3));
 		add(inferiorPanel, BorderLayout.SOUTH);
 
 		// Automático
@@ -105,9 +105,16 @@ public class PrimaryWindow extends JFrame {
 				SecondaryWindow window = new SecondaryWindow(getTitle() , manualButton.getText());
 				window.open();
 				dispose();
+				
 
 			}
 		});
+		
+		JButton exitButton = new JButton("Sair");
+		inferiorPanel.add(exitButton);
+		//falta listener
+		
+		
 
 	}
 
