@@ -1,20 +1,24 @@
 package pt.reader;
 
+import java.awt.Container;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
+import javax.swing.JFileChooser;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
+
 
 public class DataReader {
 	
 	private static Map<String,Double> rules = new TreeMap<String,Double>();
-	private static ArrayList<String> ham = new ArrayList<String>();
-	private static ArrayList<String> spam = new ArrayList<String>();
+	private static int FP = 0;
+	private static int FN = 0;
 	
 	/**
 	 * Obter estrutura de dados com regras e respetivos pesos.
@@ -25,26 +29,10 @@ public class DataReader {
 	}
 	
 	/**
-	 * Obter estrutura de dados com ham.
-	 */
-	
-	public ArrayList<String> getHam(){
-		return ham;
-	}
-	
-	/**
-	 * Obter estrutura de dados com spam.
-	 */
-	
-	public ArrayList<String> getSpam(){
-		return spam;
-	}
-	
-	/**
 	 * Ler ficheiro com regras (pode incluir os respetivos pesos).
 	 */
 	
-	public void readRules(String filePathRules) {
+	public void readRules(String filePathRules, DefaultTableModel model, JTable table) {
 		BufferedReader br = null;
         try {
             br = new BufferedReader(new FileReader(filePathRules));
@@ -52,10 +40,11 @@ public class DataReader {
             while ((line = br.readLine()) != null) {
             	String parts[] = line.split(" ");
             	if(parts.length>1) {
-            		rules.put(parts[0], Double.parseDouble(parts[1]));  //add(line,0.0);
+            		model.addRow(new Object[] {parts[0], parts[1]});
             	}else {
-            		rules.put(parts[0], 0.0);            	
+            		model.addRow(new Object[] {parts[0], 0.0});      	
             	}
+            	table.setModel(model);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -70,40 +59,21 @@ public class DataReader {
         }
 	}
 	
-//	/**
-//	 * Escrever no ficheiro de regras os respetivos pesos.
-//	 */
-//	
-//	public void writeRulesWeights(String filePathRules) {
-//		Iterator iterator = rules.entrySet().iterator();
-//		try {
-//			BufferedWriter writer = new BufferedWriter(new FileWriter(filePathRules));
-//			while (iterator.hasNext()) {
-//				Map.Entry pair = (Map.Entry)iterator.next();
-//		        writer.write(pair.getKey() + " " + pair.getValue());
-//		        System.out.println(pair.getKey() + " " + pair.getValue());
-//		        writer.newLine();
-//			}
-//		    //Close writer
-//		    writer.close();
-//		} catch(Exception e) {
-//		    e.printStackTrace();
-//		}
-//	}
 	
 	/**
 	 * Ler dados ham ou spam do ficheiro..
 	 */
 	
-	public void readInfoFile(String filePath, ArrayList<String> list) {
+	public void readInfoFile(String filePath) {
 		BufferedReader br = null;
+		String[] tokens = null;
         try {
             br = new BufferedReader(new FileReader(filePath));
             String line;
             while ((line = br.readLine()) != null) {
             	String delims = "[ ]+|\\t";
-            	String[] tokens = line.split(delims);
-            	list.add(tokens[0]);
+            	tokens = line.split(delims);
+            	
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -116,5 +86,39 @@ public class DataReader {
                 ex.printStackTrace();
             }
         }
+	}
+
+
+	
+	public class FileChooser {
+
+		private String fileName;
+		private Container parent;
+		private JTextField textField;
+		private String filePath;
+		
+		public FileChooser(String fileName, Container parent, JTextField textField) {
+			this.fileName = fileName;
+			this.parent = parent;
+			this.textField = textField;
+		}
+		
+		/**
+		 * Seleção de ficheiro rules.cf, ham.log ou spam.log
+		 * @return String
+		 */
+		public String choose() {
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setDialogTitle(fileName + " File Open");
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("LOG & CF files", "log", "cf");
+			fileChooser.setFileFilter(filter);
+			int returnValue = fileChooser.showOpenDialog(parent);
+			if (returnValue == JFileChooser.APPROVE_OPTION) {
+				File file = fileChooser.getSelectedFile();
+				textField.setText(file.getAbsolutePath());
+				filePath = file.getAbsolutePath().replace("\\", File.separator);
+			}
+			return filePath;
+		}	
 	}
 }

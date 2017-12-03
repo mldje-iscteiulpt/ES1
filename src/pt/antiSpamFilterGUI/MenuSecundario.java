@@ -5,36 +5,34 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.util.Iterator;
-import java.util.Map;
 import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
-import pt.reader.DataReader;
+public class MenuSecundario extends JFrame {
 
-public class MenuSecundario extends AntiSpamFilterMenu {
-	
 	private String typeOfMenu;
-	private DataReader reader;
 	private GroupLayout groupLayoutPanel; JPanel panel; JLabel labelFP; JLabel labelFN; JButton btnGerarConfig; JButton btnAvaliarConfig;
-	JButton btnVisualizar; JButton btnMenu; JScrollPane scrollPane; JTextField textFieldFN; JTextField textFieldFP; DefaultTableModel model;
+	JButton btnVisualizar; JButton btnMenu; JScrollPane scrollPane; JTextField textFieldFN; JTextField textFieldFP;
 	JTable table; JButton btnReiniciarPesos; JButton btnGuardarPesos;
+
+	public static DefaultTableModel model;
 
 	/**
 	 * Inicializar a janela do Menú de Configuração Manual ou Automática.
 	 */
-	
+
 	public MenuSecundario(String typeOfMenu) {
+
+		elements();
 
 		this.typeOfMenu = typeOfMenu;
 		this.setBounds(100, 100, 500, 500);
@@ -56,15 +54,17 @@ public class MenuSecundario extends AntiSpamFilterMenu {
 			this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		}
 		this.getContentPane().setLayout(new CardLayout(0, 0));
-	
-		addElements();
+
+
+
 	}
-	
+
 	/**
 	 * Adicionar elementos à janela e eventos associados aos botões.
 	 */
 
-	public void addElements() {
+	public void elements() {
+
 		if (this instanceof BoxPlotWindow) {
 
 		} else {
@@ -77,7 +77,24 @@ public class MenuSecundario extends AntiSpamFilterMenu {
 			textFieldFN = new JTextField();
 			textFieldFN.setColumns(10);
 			btnAvaliarConfig = new JButton("Avaliar configuração");
+			btnAvaliarConfig.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent event) {
+					if (event.getActionCommand().equals("Avaliar configuração")) {
+						AntiSpamFilterMenu.datareader.readInfoFile(AntiSpamFilterMenu.hamFile);
+						AntiSpamFilterMenu.datareader.readInfoFile(AntiSpamFilterMenu.spamFile);
+					}
+				}
+			});
+
 			btnGerarConfig = new JButton("Gerar configuração");
+			btnGerarConfig.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+
+
+				}
+			});
 			btnVisualizar = new JButton("Visualizar Gráfico");
 			btnVisualizar.addActionListener(new ActionListener() {
 				@Override
@@ -109,29 +126,18 @@ public class MenuSecundario extends AntiSpamFilterMenu {
 				@Override
 				public void actionPerformed(ActionEvent event) {
 					if (event.getActionCommand().equals("Guardar Pesos")) {
-						writeRulesWeights("AntiSpamConfigurationForProfessionalMailbox/rules.cf");
+						writeRulesWeights(AntiSpamFilterMenu.rulesFile);
 					}
 				}
 			});
+
 			groupLayoutPanel = new GroupLayout(panel);
 			setElementPositions();
 
 			table = new JTable();
 			createTableContent(table);
-			
-			//TESTE
-			table.getModel().addTableModelListener(new TableModelListener() {
-			      public void tableChanged(TableModelEvent e) {
-			    	 System.out.println("lol" + model.getValueAt(1, 1));
-			         System.out.println(e);
-			         for(int i = 0; i != model.getRowCount(); i++) {
-			 			Double rule = (Double) model.getValueAt(i, 1);
-			 			System.out.println(rule);
-			 			//reader.getRules().put(rule, rule);
-			 		}
-			      }
-			    });
-			
+			AntiSpamFilterMenu.datareader.readRules(AntiSpamFilterMenu.rulesFile, model, table); // ler regras
+
 			scrollPane.setViewportView(table);
 			panel.setLayout(groupLayoutPanel);
 			if ("auto".equals(typeOfMenu)) {
@@ -146,46 +152,14 @@ public class MenuSecundario extends AntiSpamFilterMenu {
 	/**
 	 * Criar conteúdo da tabela.
 	 */
-	
-	@SuppressWarnings({ "rawtypes" })
+
 	private void createTableContent(JTable table) {
-		reader = new DataReader();
-		model = new DefaultTableModel(0, 2) {
+		model = new DefaultTableModel(0, 2);
 
-			//PROBLEMA: volta a 0.0
-//			@Override
-//			public void setValueAt(Object value, int row, int col) {
-//				//model.setValueAt(value, row, col);
-//		        fireTableCellUpdated(row, col);
-//				model.fireTableDataChanged();
-//		    }
-
-
-			@Override
-			public void setValueAt(Object value, int row, int col) {
-//				model.setValueAt(value, row, col);
-		        fireTableCellUpdated(row, col);
-				model.fireTableDataChanged();
-		    }
-			
-		    @Override
-		    public boolean isCellEditable(int row, int column) {
-		    	if("manual".equals(typeOfMenu)) {
-		    		return column==1;
-		    	}
-		       return false;
-		    }
-		};
 		String[] columnNames = { "Regra", "Peso" };
 		model.setColumnIdentifiers(columnNames);
-		Iterator iterator = reader.getRules().entrySet().iterator();
-	    while (iterator.hasNext()) {
-	        Map.Entry pair = (Map.Entry)iterator.next();
-	        model.addRow(new Object[] { pair.getKey(), pair.getValue() });
-	    }
-		table.setModel(model);
 	}
-	
+
 	/**
 	 * Definir posição dos elementos na frame.
 	 */
@@ -198,115 +172,120 @@ public class MenuSecundario extends AntiSpamFilterMenu {
 	/**
 	 * Definir layout vertical.
 	 */
-	
+
 	private void setVerticalGroup() {
 		groupLayoutPanel.setVerticalGroup(
 				groupLayoutPanel.createParallelGroup(Alignment.LEADING)
-					.addGroup(groupLayoutPanel.createSequentialGroup()
+				.addGroup(groupLayoutPanel.createSequentialGroup()
 						.addContainerGap()
 						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 349, GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(ComponentPlacement.RELATED)
 						.addGroup(groupLayoutPanel.createParallelGroup(Alignment.BASELINE)
-							.addComponent(btnReiniciarPesos)
-							.addComponent(btnGuardarPesos))
+								.addComponent(btnReiniciarPesos)
+								.addComponent(btnGuardarPesos))
 						.addGap(3)
 						.addGroup(groupLayoutPanel.createParallelGroup(Alignment.LEADING)
-							.addGroup(groupLayoutPanel.createSequentialGroup()
-								.addGroup(groupLayoutPanel.createParallelGroup(Alignment.BASELINE)
-									.addComponent(btnAvaliarConfig)
-									.addComponent(btnVisualizar))
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addGroup(groupLayoutPanel.createParallelGroup(Alignment.BASELINE)
-									.addComponent(btnGerarConfig)
-									.addComponent(btnMenu)))
-							.addGroup(groupLayoutPanel.createSequentialGroup()
-								.addGroup(groupLayoutPanel.createParallelGroup(Alignment.BASELINE)
-									.addComponent(labelFP)
-									.addComponent(textFieldFP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addGroup(groupLayoutPanel.createParallelGroup(Alignment.BASELINE)
-									.addComponent(textFieldFN, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-									.addComponent(labelFN))))
+								.addGroup(groupLayoutPanel.createSequentialGroup()
+										.addGroup(groupLayoutPanel.createParallelGroup(Alignment.BASELINE)
+												.addComponent(btnAvaliarConfig)
+												.addComponent(btnVisualizar))
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addGroup(groupLayoutPanel.createParallelGroup(Alignment.BASELINE)
+												.addComponent(btnGerarConfig)
+												.addComponent(btnMenu)))
+								.addGroup(groupLayoutPanel.createSequentialGroup()
+										.addGroup(groupLayoutPanel.createParallelGroup(Alignment.BASELINE)
+												.addComponent(labelFP)
+												.addComponent(textFieldFP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addGroup(groupLayoutPanel.createParallelGroup(Alignment.BASELINE)
+												.addComponent(textFieldFN, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addComponent(labelFN))))
 						.addContainerGap(18, Short.MAX_VALUE))
-			);
+				);
 	}
 
 	/**
 	 * Definir layout horizontal.
 	 */
-	
+
 	private void setHorizontalGroup() {
 		groupLayoutPanel.setHorizontalGroup(
 				groupLayoutPanel.createParallelGroup(Alignment.LEADING)
-					.addGroup(groupLayoutPanel.createSequentialGroup()
+				.addGroup(groupLayoutPanel.createSequentialGroup()
 						.addContainerGap()
 						.addGroup(groupLayoutPanel.createParallelGroup(Alignment.LEADING)
-							.addGroup(groupLayoutPanel.createSequentialGroup()
-								.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 466, GroupLayout.PREFERRED_SIZE)
-								.addContainerGap())
-							.addGroup(Alignment.TRAILING, groupLayoutPanel.createSequentialGroup()
-								.addGroup(groupLayoutPanel.createParallelGroup(Alignment.LEADING)
-									.addComponent(labelFP)
-									.addComponent(labelFN))
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addGroup(groupLayoutPanel.createParallelGroup(Alignment.LEADING, false)
-									.addComponent(textFieldFN, 0, 0, Short.MAX_VALUE)
-									.addComponent(textFieldFP, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE))
-								.addPreferredGap(ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
-								.addGroup(groupLayoutPanel.createParallelGroup(Alignment.LEADING, false)
-									.addComponent(btnGerarConfig, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-									.addComponent(btnAvaliarConfig, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-									.addComponent(btnReiniciarPesos, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addGroup(groupLayoutPanel.createParallelGroup(Alignment.LEADING, false)
-									.addComponent(btnVisualizar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-									.addComponent(btnMenu, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-									.addComponent(btnGuardarPesos, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-								.addGap(20))))
-			);
+								.addGroup(groupLayoutPanel.createSequentialGroup()
+										.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 466, GroupLayout.PREFERRED_SIZE)
+										.addContainerGap())
+								.addGroup(Alignment.TRAILING, groupLayoutPanel.createSequentialGroup()
+										.addGroup(groupLayoutPanel.createParallelGroup(Alignment.LEADING)
+												.addComponent(labelFP)
+												.addComponent(labelFN))
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addGroup(groupLayoutPanel.createParallelGroup(Alignment.LEADING, false)
+												.addComponent(textFieldFN, 0, 0, Short.MAX_VALUE)
+												.addComponent(textFieldFP, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE))
+										.addPreferredGap(ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+										.addGroup(groupLayoutPanel.createParallelGroup(Alignment.LEADING, false)
+												.addComponent(btnGerarConfig, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(btnAvaliarConfig, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(btnReiniciarPesos, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addGroup(groupLayoutPanel.createParallelGroup(Alignment.LEADING, false)
+												.addComponent(btnVisualizar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(btnMenu, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(btnGuardarPesos, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+										.addGap(20))))
+				);
 	}
-	
+
 	/**
 	 * Reinicializar os pesos das regras com o valor 0.0
 	 */
-	
+
 	public void resetValues() {
 		for(int i = 0; i != model.getRowCount(); i++) {
 			model.setValueAt(0.0, i, 1);
-			String rule = (String) model.getValueAt(i, 0);
-			reader.getRules().put(rule, 0.0);
 		}
 		table.setModel(model);
 		model.fireTableDataChanged();
 	}
-	
+
 	public void writeRulesWeights(String filePathRules) {
 		try {
+			double a ;
 			BufferedWriter writer = new BufferedWriter(new FileWriter(filePathRules));
-			for (int row = 0; row < table.getRowCount(); row++) {
-			    	writer.write((String) model.getDataVector().elementAt(row).toString().replaceAll("\\[", "").replaceAll("\\]","").replaceAll("[[-+^:,]]",""));
-			        writer.newLine();
+			for(int i = 0; i != model.getRowCount(); i++) {		
+				if(model.getValueAt(i, 1) instanceof String) {
+					 a = Double.parseDouble((String)model.getValueAt(i, 1));
+				} else {
+					 a = (double) model.getValueAt(i, 1);
+				}
+				
+				String rule = (String) model.getValueAt(i, 0);
+				AntiSpamFilterMenu.datareader.getRules().put(rule,a);
+				writer.write(rule + " " +  AntiSpamFilterMenu.datareader.getRules().get(rule));
+				writer.newLine();
 			}
-			System.out.println(model.getDataVector().elementAt(0).toString());
-		    //Close writer
-		    writer.close();
+			writer.close();
 		} catch(Exception e) {
-		    e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Redefinição do método equals.
 	 */
-	
+
 	@Override
 	public boolean equals(Object obj) {
-	    if(this == obj)
-	    	return true;
-	    if(obj == null)
-	    	return false;
-	    if(getClass() != obj.getClass())
-	    	return false;
+		if(this == obj)
+			return true;
+		if(obj == null)
+			return false;
+		if(getClass() != obj.getClass())
+			return false;
 		return true;
 	}
 }

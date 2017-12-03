@@ -46,11 +46,11 @@ public class AntiSpamFilterAutomaticConfiguration {
             .setNumberOfCores(8)
             .build();
 
-    new ExecuteAlgorithms<>(experiment).run();
-    new GenerateReferenceParetoSetAndFrontFromDoubleSolutions(experiment).run();
-    new ComputeQualityIndicators<>(experiment).run() ;
-    new GenerateLatexTablesWithStatistics(experiment).run() ;
-    new GenerateBoxplotsWithR<>(experiment).setRows(1).setColumns(1).run() ;
+    	new ExecuteAlgorithms<>(experiment).run();
+    	new GenerateReferenceParetoSetAndFrontFromDoubleSolutions(experiment).run();
+    	new ComputeQualityIndicators<>(experiment).run() ;
+    	new GenerateLatexTablesWithStatistics(experiment).run() ;
+    	new GenerateBoxplotsWithR<>(experiment).setRows(1).setColumns(1).run() ;
     
   }
 

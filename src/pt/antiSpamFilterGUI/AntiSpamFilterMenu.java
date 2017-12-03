@@ -1,28 +1,24 @@
 package pt.antiSpamFilterGUI;
 
+import java.awt.CardLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JFrame;
-import java.awt.CardLayout;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-import pt.reader.DataReader;
-import pt.reader.FileChooser;
-
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import pt.reader.DataReader;
+import pt.reader.DataReader.FileChooser;
 
 @SuppressWarnings("serial")
 public class AntiSpamFilterMenu extends JFrame {
 
-	private JTextField textFieldRules;
-	private JTextField textFieldHam;
-	private JTextField textFieldSpam;
-	private DataReader datareader;
+	private JTextField textFieldRules; JTextField textFieldHam; JTextField textFieldSpam; static String rulesFile; 
+	static String hamFile; static String spamFile;
+	
+	public static DataReader datareader;
 
 	/**
 	 * Iniciar a aplicação.
@@ -111,12 +107,8 @@ public class AntiSpamFilterMenu extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				if (event.getActionCommand().equals("Configuração Manual")) {
-					datareader.readRules("AntiSpamConfigurationForProfessionalMailbox/rules.cf"); // ler regras
-					datareader.readInfoFile("AntiSpamConfigurationForProfessionalMailbox/ham.log", datareader.getHam()); // ler
-																															// ham
-					datareader.readInfoFile("AntiSpamConfigurationForProfessionalMailbox/ham.log",
-							datareader.getSpam()); // ler spam
 					MenuSecundario menumanual = new MenuSecundario("manual");
+					menumanual.setVisible(true);
 					dispose();
 				}
 			}
@@ -129,11 +121,6 @@ public class AntiSpamFilterMenu extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				if (event.getActionCommand().equals("Configuração Automática")) {
-					datareader.readRules("AntiSpamConfigurationForProfessionalMailbox/rules.cf"); // ler regras
-					datareader.readInfoFile("AntiSpamConfigurationForProfessionalMailbox/ham.log", datareader.getHam()); // ler
-																															// ham
-					datareader.readInfoFile("AntiSpamConfigurationForProfessionalMailbox/ham.log",
-							datareader.getSpam()); // ler spam
 					MenuSecundario menuauto = new MenuSecundario("auto");
 					dispose();
 				}
@@ -158,12 +145,8 @@ public class AntiSpamFilterMenu extends JFrame {
 		btnBrowseRules.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				FileChooser chooser = new FileChooser("Rules", getParent(), textFieldRules);
-				chooser.choose();
-				
-				if (event.getActionCommand().equals("Browse")) {
-					// datareader.writeRulesWeights(); //escrever em ficheiro de regras
-				}
+				FileChooser chooser = datareader.new FileChooser("Rules", getParent(), textFieldRules);
+				rulesFile = chooser.choose();
 			}
 		});
 		panelMenu.add(btnBrowseRules);
@@ -175,9 +158,8 @@ public class AntiSpamFilterMenu extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FileChooser chooser = new FileChooser("Ham", getParent(), textFieldHam);
-				chooser.choose();
-
+				DataReader.FileChooser chooser = datareader.new FileChooser("Ham", getParent(), textFieldHam);
+				hamFile = chooser.choose();
 			}
 		});
 		;
@@ -189,11 +171,9 @@ public class AntiSpamFilterMenu extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FileChooser chooser = new FileChooser("Spam", getParent(), textFieldSpam);
-				chooser.choose();
-
+				DataReader.FileChooser chooser = datareader.new FileChooser("Spam", getParent(), textFieldSpam);
+				spamFile = chooser.choose();
 			}
 		});
-
 	}
 }
