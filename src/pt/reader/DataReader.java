@@ -1,17 +1,16 @@
 package pt.reader;
 
-import java.awt.Container;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
-import javax.swing.JFileChooser;
+
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+
+import pt.objects.Rules;
 
 
 public class DataReader {
@@ -19,6 +18,12 @@ public class DataReader {
 	private static Map<String,Double> rules = new TreeMap<String,Double>();
 	private static int FP = 0;
 	private static int FN = 0;
+	
+	private CheckForFalses checker;
+	private ArrayList<Rules> rulesList = new ArrayList<Rules>();
+	public ArrayList<Rules> getRulesList(){
+		return rulesList;
+	}
 	
 	/**
 	 * Obter estrutura de dados com regras e respetivos pesos.
@@ -64,7 +69,9 @@ public class DataReader {
 	 * Ler dados ham ou spam do ficheiro..
 	 */
 	
-	public void readInfoFile(String filePath) {
+	public void readInfoFile(String filePath, String fileType) {
+		checker = new CheckForFalses(rulesList);
+		
 		BufferedReader br = null;
 		String[] tokens = null;
         try {
@@ -73,6 +80,8 @@ public class DataReader {
             while ((line = br.readLine()) != null) {
             	String delims = "[ ]+|\\t";
             	tokens = line.split(delims);
+//            	for(String tok: tokens)System.out.println(tok + "");
+            	checker.getFalse(fileType, tokens);
             	
             }
         } catch (IOException e) {
@@ -87,38 +96,9 @@ public class DataReader {
             }
         }
 	}
-
-
 	
-	public class FileChooser {
-
-		private String fileName;
-		private Container parent;
-		private JTextField textField;
-		private String filePath;
-		
-		public FileChooser(String fileName, Container parent, JTextField textField) {
-			this.fileName = fileName;
-			this.parent = parent;
-			this.textField = textField;
-		}
-		
-		/**
-		 * Seleção de ficheiro rules.cf, ham.log ou spam.log
-		 * @return String
-		 */
-		public String choose() {
-			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setDialogTitle(fileName + " File Open");
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("LOG & CF files", "log", "cf");
-			fileChooser.setFileFilter(filter);
-			int returnValue = fileChooser.showOpenDialog(parent);
-			if (returnValue == JFileChooser.APPROVE_OPTION) {
-				File file = fileChooser.getSelectedFile();
-				textField.setText(file.getAbsolutePath());
-				filePath = file.getAbsolutePath().replace("\\", File.separator);
-			}
-			return filePath;
-		}	
+	public CheckForFalses getChecker() {
+		return checker;
 	}
+	
 }

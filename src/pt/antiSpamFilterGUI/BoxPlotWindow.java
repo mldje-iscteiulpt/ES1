@@ -9,7 +9,6 @@ public class BoxPlotWindow extends MenuSecundario {
 	public BoxPlotWindow() {
 		super("BoxPlot");
 		setTitle("Boxplot");
-		open();
 	}
 	
 	/**

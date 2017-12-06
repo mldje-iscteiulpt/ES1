@@ -10,15 +10,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import pt.reader.DataReader;
-import pt.reader.DataReader.FileChooser;
+import pt.reader.FileChooser;
 
 @SuppressWarnings("serial")
 public class AntiSpamFilterMenu extends JFrame {
 
-	private JTextField textFieldRules; JTextField textFieldHam; JTextField textFieldSpam; static String rulesFile; 
-	static String hamFile; static String spamFile;
+	private JTextField textFieldRules; 
+	private JTextField textFieldHam; 
+	private JTextField textFieldSpam;
+	private static String rulesFile; 
+	private static String hamFile; 
+	private static String spamFile;
 	
-	public static DataReader datareader;
+	private static DataReader datareader;
 
 	/**
 	 * Iniciar a aplicação.
@@ -122,6 +126,7 @@ public class AntiSpamFilterMenu extends JFrame {
 			public void actionPerformed(ActionEvent event) {
 				if (event.getActionCommand().equals("Configuração Automática")) {
 					MenuSecundario menuauto = new MenuSecundario("auto");
+					menuauto.setVisible(true);
 					dispose();
 				}
 			}
@@ -145,7 +150,7 @@ public class AntiSpamFilterMenu extends JFrame {
 		btnBrowseRules.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				FileChooser chooser = datareader.new FileChooser("Rules", getParent(), textFieldRules);
+				FileChooser chooser = new FileChooser("Rules", getParent(), textFieldRules);
 				rulesFile = chooser.choose();
 			}
 		});
@@ -158,7 +163,7 @@ public class AntiSpamFilterMenu extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				DataReader.FileChooser chooser = datareader.new FileChooser("Ham", getParent(), textFieldHam);
+				FileChooser chooser = new FileChooser("Ham", getParent(), textFieldHam);
 				hamFile = chooser.choose();
 			}
 		});
@@ -171,9 +176,25 @@ public class AntiSpamFilterMenu extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				DataReader.FileChooser chooser = datareader.new FileChooser("Spam", getParent(), textFieldSpam);
+				FileChooser chooser = new FileChooser("Spam", getParent(), textFieldSpam);
 				spamFile = chooser.choose();
 			}
 		});
+	}
+	
+	public static DataReader getDatareader() {
+		return datareader;
+	}
+	
+	public static String getRulesFile() {
+		return rulesFile;
+	}
+	
+	public static String getHamFile() {
+		return hamFile;
+	}
+	
+	public static String getSpamFile() {
+		return spamFile;
 	}
 }
