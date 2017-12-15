@@ -14,10 +14,18 @@ public class BoxPlotWindow extends MenuSecundario {
 	/**
 	 * Abrir a janela da Box Plot.
 	 */
-	
 	public void open() {
+		addContent();
 		setSize(500, 500);
 		setVisible(true);
+	}
+	
+	/**
+	 * Adiciona o conteúdo para a visualização do BoxPlot
+	 */
+	private void addContent() {
+		
+		
 	}
 	
 }
