@@ -5,6 +5,11 @@ public class Rules {
 	private String name;
 	private double weight;
 	
+	/**
+	 * Construtor de regras
+	 * @param name		Recebe o nome da regra
+	 * @param weight	Recebe o peso da regra
+	 */
 	public Rules(String name, double weight) {
 		this.name = name;
 		this.weight = weight;

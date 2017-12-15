@@ -14,6 +14,12 @@ public class FileChooser {
 	private JTextField textField;
 	private String filePath;
 	
+	/**
+	 * Construtor da procura do ficheiro a utilizar
+	 * @param fileName Nome do ficheiro (Rules,Ham,Spam)
+	 * @param parent Componente que inclui outros componentes AWT
+	 * @param textField	Espaço a ser editado com o resultado obtido
+	 */
 	public FileChooser(String fileName, Container parent, JTextField textField) {
 		this.fileName = fileName;
 		this.parent = parent;
@@ -22,7 +28,7 @@ public class FileChooser {
 	
 	/**
 	 * Seleção de ficheiro rules.cf, ham.log ou spam.log
-	 * @return String
+	 * @return String	Devolve o path do ficheiro em questão
 	 */
 	public String choose() {
 		JFileChooser fileChooser = new JFileChooser();

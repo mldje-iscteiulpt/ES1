@@ -11,13 +11,21 @@ public class CheckForFalses {
 	private int FP = 0;
 	private int FN = 0;
 	
-	
+	/**
+	 * Construtor do verificador de falsos positivos e falsos negativos, para a configuração manual
+	 * @param rulesList Lista de Regras
+	 */
 	public CheckForFalses(ArrayList<Rules> rulesList) {
 		this.rulesList = rulesList;
 		FP = 0;
 		FN = 0;
 	}
 	
+	/**
+	 * Verifica a existência de Falsos Positivos, ou de Falsos Negativos
+	 * @param type		Tipo de Ficheiro (Ham,Spam)
+	 * @param tokens	Vector de strings para verificar
+	 */
 	public void getFalse(String type, String[] tokens) {
 		
 		double weightTotal = 0;
@@ -48,8 +56,10 @@ public class CheckForFalses {
 		
 	}
 	
-	/*
-	 * Para o HAM
+	/**
+	 * Verificação para o ficheiro HAM
+	 * @param weightTotal	Recebe a soma total dos pesos
+	 * @return				Devolve um valor lógico
 	 */
 	public boolean isFalsePositive(double weightTotal){
 		if(weightTotal > 5.0) {
@@ -58,8 +68,10 @@ public class CheckForFalses {
 		return false;
 	}
 	
-	/*
-	 * Para o SPAM
+	/**
+	 * Verificação para o ficheiro SPAM
+	 * @param weightTotal	Recebe a soma total dos pesos
+	 * @return				Devolve um valor lógico
 	 */
 	public boolean isFalseNegative(double weightTotal){
 		if(weightTotal < -5.0) {

@@ -336,12 +336,10 @@ public class MenuSecundario extends JFrame {
 
 	public void setFP(int number) {
 		textFieldFP.setText(number + "");
-		;
 	}
 
 	public void setFN(int number) {
 		textFieldFN.setText(number + "");
-		;
 	}
 
 	/**

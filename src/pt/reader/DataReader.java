@@ -15,9 +15,9 @@ import pt.objects.Rules;
 
 public class DataReader {
 	
-	private static Map<String,Double> rules = new TreeMap<String,Double>();
-	private static int FP = 0;
-	private static int FN = 0;
+//	private static Map<String,Double> rules = new TreeMap<String,Double>();
+//	private static int FP = 0;
+//	private static int FN = 0;
 	
 	private CheckForFalses checker;
 	private ArrayList<Rules> rulesList = new ArrayList<Rules>();
@@ -29,9 +29,9 @@ public class DataReader {
 	 * Obter estrutura de dados com regras e respetivos pesos.
 	 */
 	
-	public Map<String,Double> getRules(){
-		return rules;
-	}
+//	public Map<String,Double> getRules(){
+//		return rules;
+//	}
 	
 	/**
 	 * Ler ficheiro com regras (pode incluir os respetivos pesos).
