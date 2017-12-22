@@ -1,16 +1,15 @@
-package pt.antiSpamFilterGUI;
+package pt.iscte.es1.antiSpamFilterGUI;
 
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -19,44 +18,86 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
 
-import pt.objects.Rules;
-import pt.reader.DataReader;
+import org.uma.jmetal.util.JMetalException;
+
+import pt.iscte.es1.antiSpamFilter.AntiSpamFilterAutomaticConfiguration;
+import pt.iscte.es1.antiSpamFilter.AntiSpamFilterManager;
+import pt.iscte.es1.antiSpamFilter.AntiSpamFilterProblem;
+import pt.iscte.es1.reader.DataReader;
+import pt.iscte.es1.tabledata.TableDataManipulator;
+
+/**
+ * Classe responsável por gerar a janela de menú secundário onde é possível realizar a configuração manual ou
+ * automática do filtro anti-spam. Esta janela difere consoante o tipo de filtro, apresentando diferenças relativamente
+ * às opções (difere no número de botões apresentados). 
+ * Nas duas opções apresenta uma tabela com as regras e respetivos pesos; é possível editar os pesos apenas na configuração manual. No caso
+ * específico da configuração manual, irá ler o ficheiro de regras e, caso este ficheiro indique os pesos de cada regra, adiciona esses pesos;
+ * se não indicar, os mesmos são iniciados com o valor 0.0.
+ * Apresenta também um botão para avaliar a configuração que indica o número de falsos positivos e falsos negativos decorrentes dos pesos
+ * gerados em configuração manual ou automática. 
+ * No caso específico da configuração automática, apresenta a opção de gerar os pesos das regras de forma aleatória e apresenta igualmente
+ * a possibilidade de visualizar o gráfico BoxPlot.
+ * 
+ * @author ES1-2017-IC2-82
+ *
+ */
 
 @SuppressWarnings("serial")
-public class MenuSecundario extends JFrame {
+public class MenuSecundario extends AntiSpamFilterMenu {
 
+	/** String que define o tipo de menú, se o menú relativo a filtro anti-spam manual ou automático  */
 	private String typeOfMenu;
+	/** GroupLayout onde serão dispostos os elementos gráficos da interface gráfica */
 	private GroupLayout groupLayoutPanel;
+	/** Panel para inserção dos elementos gráficos como botões, labels, campos de texto e tabela */
 	private JPanel panel;
+	/** Etiqueta com referência a "Falsos Positivos" */
 	private JLabel labelFP;
+	/** Etiqueta com referência a "Falsos Negativos" */
 	private JLabel labelFN;
+	/** Botão que gera configuração automática do filtro anti-spam */
 	private JButton btnGerarConfig;
+	/** Botão que inicia a avaliação do número de Falsos Positivos e Falsos Negativos consoante os pesos atribuídos às regras */
 	private JButton btnAvaliarConfig;
+	/** Botão que abre janela para visualização do gráfico BoxPlot */
 	private JButton btnVisualizar;
+	/** Botão para regressar ao menú inicial */
 	private JButton btnMenu;
+	/** Elemento que permite realizar o scroll da tabela das regras e pesos */
 	private JScrollPane scrollPane;
+	/** Campo onde surgem o número de Falsos Negativos */
 	private JTextField textFieldFN;
+	/** Campo onde surgem o número de Falsos Positivos */
 	private JTextField textFieldFP;
+	/** Tabela que apresenta as regras e respetivos pesos */
 	private JTable table;
+	/** Botão que inicia o reset dos valores de todas regras para 0.0 */
 	private JButton btnReiniciarPesos;
+	/** Botão que permite guardar as regras e os pesos contidos na tabela em ficheiro de texto */
 	private JButton btnGuardarPesos;
-
+	/** Variável de acesso aos métodos que manipulam os dados da tabela para escrita no ficheiro ou reset dos mesmos (peso=0.0) */
+	private TableDataManipulator tableData;
+	/** Modelo inserido na tabela que apresenta colunas de regras e respetivos pesos */
 	public static DefaultTableModel model;
+	
+	List<JButton> menuSecundarioButtons;
 
 	/**
-	 * Inicializar a janela do Men� de Configura��o Manual ou Autom�tica.
+	 * Inicializar a janela do menú de configuração manual ou automático do filtro anti-spam.
+	 * @param typeOfMenu - Tipo de menú a ser gerado (manual ou automático)
 	 */
 
 	public MenuSecundario(String typeOfMenu) {
 
 		this.typeOfMenu = typeOfMenu;
+		menuSecundarioButtons = new ArrayList<JButton>();
 		
 		elements();
 
 		this.setBounds(100, 100, 500, 500);
-		if ("BoxPlot".equals(typeOfMenu)) {
-			this.setDefaultCloseOperation(HIDE_ON_CLOSE);
-		} else {
+//		if ("BoxPlot".equals(typeOfMenu)) {
+//			this.setDefaultCloseOperation(HIDE_ON_CLOSE);
+//		} else {
 			if ("manual".equals(typeOfMenu)) {
 				setTitle("Filtragem Manual Anti-Spam");
 //				btnGerarConfig.setOpaque(false);
@@ -65,20 +106,23 @@ public class MenuSecundario extends JFrame {
 //				btnGerarConfig.setText("");
 //				btnGerarConfig.setEnabled(false);
 			} else if ("auto".equals(typeOfMenu)) {
-				setTitle("Filtragem Autom�tica Anti-Spam");
+				setTitle("Filtragem Automática Anti-Spam");
 			}
 			this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		}
+//		}
 		this.getContentPane().setLayout(new CardLayout(0, 0));
 
 	}
 
 	/**
-	 * Adicionar elementos � janela e eventos associados aos bot�es.
+	 * Adicionar elementos à janela e eventos associados aos botões.
 	 */
 
 	public void elements() {
-
+//
+//		if (this instanceof BoxPlotWindow) {
+//
+//		} else {
 			panel = new JPanel();
 			scrollPane = new JScrollPane();
 			labelFP = new JLabel("Falsos Positivos");
@@ -87,13 +131,14 @@ public class MenuSecundario extends JFrame {
 			textFieldFP.setColumns(10);
 			textFieldFN = new JTextField();
 			textFieldFN.setColumns(10);
-			btnAvaliarConfig = new JButton("Avaliar configura��o");
+			createTable();
+			tableData = new TableDataManipulator(table, model);
+			btnAvaliarConfig = new JButton("Avaliar configura��o");
 			btnAvaliarConfig.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent event) {
-					if (event.getActionCommand().equals("Avaliar configura��o")) {
-						DataReader dataReader = AntiSpamFilterMenu.getDatareader();
-
+					if (event.getActionCommand().equals("Avaliar configura��o")) {
+						//DataReader dataReader = AntiSpamFilterMenu.getDatareader();
 						dataReader.readInfoFile(AntiSpamFilterMenu.getHamFile(), "ham");
 						setFP(dataReader.getChecker().getFP());
 						dataReader.readInfoFile(AntiSpamFilterMenu.getSpamFile(), "spam");
@@ -101,55 +146,64 @@ public class MenuSecundario extends JFrame {
 					}
 				}
 			});
+			menuSecundarioButtons.add(btnAvaliarConfig);
 
-			btnGerarConfig = new JButton("Gerar configura��o");
+			btnGerarConfig = new JButton("Gerar configura��o");
 			btnGerarConfig.addActionListener(new ActionListener() {
 				@Override
-				public void actionPerformed(ActionEvent arg0) {
-
+				public void actionPerformed(ActionEvent arg0) {					
+					AntiSpamFilterProblem problem = new AntiSpamFilterProblem(dataReader.getHamList(), dataReader.getSpamList(), dataReader.getRules());
+						try {
+							useAutomaticConfig(new AntiSpamFilterManager(), new AntiSpamFilterAutomaticConfiguration(problem));
+						} catch (IOException |JMetalException i) {
+						}
+					
 				}
 			});
-			btnVisualizar = new JButton("Visualizar Gr�fico");
+			menuSecundarioButtons.add(btnGerarConfig);
+			btnVisualizar = new JButton("Visualizar Gr�fico");
 			btnVisualizar.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					
 				}
 			});
-			btnMenu = new JButton("Retornar ao Men�");
+			menuSecundarioButtons.add(btnVisualizar);
+			btnMenu = new JButton("Retornar ao Menú");
 			btnMenu.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent event) {
-					if (event.getActionCommand().equals("Retornar ao Men�")) {
+					if (event.getActionCommand().equals("Retornar ao Menú")) {
 						AntiSpamFilterMenu menu = new AntiSpamFilterMenu();
 						dispose();
 					}
 				}
 			});
+			menuSecundarioButtons.add(btnMenu);
 			btnReiniciarPesos = new JButton("Reiniciar Pesos");
 			btnReiniciarPesos.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent event) {
 					if (event.getActionCommand().equals("Reiniciar Pesos")) {
-						resetValues();
+						tableData.resetValues();
 					}
 				}
 			});
+			menuSecundarioButtons.add(btnReiniciarPesos);
 			btnGuardarPesos = new JButton("Guardar Pesos");
 			btnGuardarPesos.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent event) {
 					if (event.getActionCommand().equals("Guardar Pesos")) {
-						writeRulesWeights(AntiSpamFilterMenu.getRulesFile());
+						tableData.writeRulesWeights(AntiSpamFilterMenu.getRulesFile(), dataReader.getRules());
 					}
 				}
 			});
+			menuSecundarioButtons.add(btnGuardarPesos);
 			
 			groupLayoutPanel = new GroupLayout(panel);
 			setElementPositions();
 
-			table = new JTable();
-			createTableContent(table);
 			AntiSpamFilterMenu.getDatareader().readRules(AntiSpamFilterMenu.getRulesFile(), model, table); // ler regras
 
 			scrollPane.setViewportView(table);
@@ -167,26 +221,52 @@ public class MenuSecundario extends JFrame {
 			if ("auto".equals(typeOfMenu)) {
 				btnGerarConfig.setVisible(true);
 
-			} else if ("manual".equals(typeOfMenu)) {
+			} else  {
 				btnGerarConfig.setVisible(false);
 			}
 			this.add(panel);
+//		}
+	}
+
+	public void useAutomaticConfig(AntiSpamFilterManager manager,AntiSpamFilterAutomaticConfiguration autoConf) throws IOException {
+	
+			autoConf.generateAutomaticConfig();
+			manager.pickOptimalConfig("default");
+			tableData.writeOptimalDataToTable(manager.generateOptimalWeights("default"));
+			String[] aux = manager.getBestConfig();
+			Double auxFN = Double.parseDouble(aux[0]);
+			Double auxFP = Double.parseDouble(aux[1]);
+			setFN(auxFN.intValue());
+			setFP(auxFP.intValue());
+			//manager.compileBoxPlotFiles();
 		
 	}
 
 	/**
-	 * Criar conte�do da tabela.
+	 * Criar conteúdo da tabela e definir quais as colunas editáveis. Na configuração manual só a coluna 1 (pesos) é editável;
+	 * na configuração automática as duas colunas não serão editáveis
+	 * @param table - JTable com regras e respetivos pesos
 	 */
 
-	private void createTableContent(JTable table) {
-		model = new DefaultTableModel(0, 2);
+	public void createTable() {
+		table = new JTable();
+		model = new DefaultTableModel(0, 2) {
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				if("manual".equals(typeOfMenu)) {
+					return column==1;
+				}
+				return false;
+			}
+		};
 
 		String[] columnNames = { "Regra", "Peso" };
 		model.setColumnIdentifiers(columnNames);
 	}
 
 	/**
-	 * Definir posi��o dos elementos na frame.
+	 * Definir posições dos elementos gráficos na frame.
 	 */
 
 	private void setElementPositions() {
@@ -266,88 +346,39 @@ public class MenuSecundario extends JFrame {
 												.addGap(20)))));
 	}
 
-	/**
-	 * Reinicializar os pesos das regras com o valor 0.0
-	 */
-
-	public void resetValues() {
-		for (int i = 0; i != model.getRowCount(); i++) {
-			model.setValueAt(0.0, i, 1);
-		}
-		table.setModel(model);
-		model.fireTableDataChanged();
-	}
-
-//	public void writeRulesWeights(String filePathRules) {
-//		try {
-//			double a;
-//			BufferedWriter writer = new BufferedWriter(new FileWriter(filePathRules));
-//			for (int i = 0; i != model.getRowCount(); i++) {
-//				if (model.getValueAt(i, 1) instanceof String) {
-//					a = Double.parseDouble((String) model.getValueAt(i, 1));
-//				} else {
-//					a = (double) model.getValueAt(i, 1);
-//				}
-//
-//				String rule = (String) model.getValueAt(i, 0);
-//				// AntiSpamFilterMenu.getDatareader().getRules().put(rule,a);
-//				// writer.write(rule + " " +
-//				// AntiSpamFilterMenu.getDatareader().getRules().get(rule));
-//				// writer.newLine();
-//
-//				AntiSpamFilterMenu.getDatareader().getRulesList().add(new Rules(rule, a));
-//				writer.write(rule + " " + a);
-//				System.out.println(rule + " " + a);
-//				writer.newLine();
-//			}
-//			writer.close();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
 	
-	public void writeRulesWeights(String filePathRules) {
-		try {
-			double a;
-			PrintWriter writer = new PrintWriter(new FileWriter(filePathRules));
-//			BufferedWriter writer = new BufferedWriter(new FileWriter(filePathRules));
-			for (int i = 0; i != model.getRowCount(); i++) {
-				if (table.getValueAt(i, 1) instanceof String) {
-					a = Double.parseDouble((String) table.getValueAt(i, 1));
-				} else {
-					a = (double) table.getValueAt(i, 1);
-				}
-
-				String rule = (String) table.getValueAt(i, 0);
-
-				AntiSpamFilterMenu.getDatareader().getRulesList().add(new Rules(rule, a));
-				writer.println(rule + " " + a);
-				System.out.println(rule + " " + a);
-			}
-			writer.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	/**
+	 * Definir número de casos que são falsos positivos
+	 * @param number - número de falsos positivos
+	 */
 
 	public void setFP(int number) {
 		textFieldFP.setText(number + "");
 	}
+	
+	/**
+	 * Definir número de casos que são falsos negativos
+	 * @param number
+	 */
 
 	public void setFN(int number) {
 		textFieldFN.setText(number + "");
 	}
+	
+	public List<JButton> getButtonFromMenuSecundario(){
+		return menuSecundarioButtons;
+	}
 
 	/**
-	 * Redefini��o do m�todo equals.
+	 * Redefinição do método equals.
+	 * @param Object - objeto que se pretende comparar com outro objeto
+	 * @return Boolean - informa se objetos comparados são idênticos ou não
 	 */
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		return true;

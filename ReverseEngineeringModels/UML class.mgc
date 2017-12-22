@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ClassDiagram>
+    <Class
+        name="pt.iscte.es1.antiSpamFilter.AntiSpamFilterAutomaticConfiguration"
+        x="7" y="259">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association
+            destinationClassName="pt.iscte.es1.antiSpamFilter.AntiSpamFilterProblem"
+            endpointName="problem" kind="Simple"/>
+    </Class>
+    <Class name="pt.iscte.es1.antiSpamFilterGUI.AntiSpamFilterMenu"
+        x="842" y="192">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association
+            destinationClassName="pt.iscte.es1.reader.DataReader"
+            endpointName="dataReader" kind="Simple"/>
+    </Class>
+    <Class name="pt.iscte.es1.objects.Message" x="310" y="46">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="pt.iscte.es1.objects.Rule"
+            endpointName="messages" kind="Simple"/>
+    </Class>
+    <Class name="pt.iscte.es1.reader.CheckForFalses" x="462" y="29">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Communication destinationClassName="pt.iscte.es1.objects.Rule"/>
+    </Class>
+    <Class name="pt.iscte.es1.resultcompiler.RToEpsCompiler" x="925" y="39">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="pt.iscte.es1.tabledata.TableDataManipulator" x="328" y="397">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="pt.iscte.es1.reader.FileChooser" x="674" y="33">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="pt.iscte.es1.antiSpamFilterGUI.MenuSecundario" x="810" y="304">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Extension destinationClassName="pt.iscte.es1.antiSpamFilterGUI.AntiSpamFilterMenu"/>
+        <Association
+            destinationClassName="pt.iscte.es1.tabledata.TableDataManipulator"
+            endpointName="tableData" kind="Simple"/>
+        <Communication destinationClassName="pt.iscte.es1.antiSpamFilterGUI.AntiSpamFilterMenu"/>
+        <Communication destinationClassName="pt.iscte.es1.reader.DataReader"/>
+    </Class>
+    <Class name="pt.iscte.es1.antiSpamFilter.AntiSpamFilterManager"
+        x="7" y="343">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Communication destinationClassName="pt.iscte.es1.resultcompiler.RToEpsCompiler"/>
+        <Communication destinationClassName="pt.iscte.es1.resultcompiler.TexToPDFCompiler"/>
+    </Class>
+    <Class name="pt.iscte.es1.objects.Rule" x="290" y="151">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="pt.iscte.es1.reader.DataReader" x="425" y="211">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="pt.iscte.es1.objects.Message"
+            endpointName="hamList" kind="Simple"/>
+        <Association
+            destinationClassName="pt.iscte.es1.reader.CheckForFalses"
+            endpointName="checker" kind="Simple"/>
+        <Association destinationClassName="pt.iscte.es1.objects.Message"
+            endpointName="spamList" kind="Simple"/>
+        <Communication destinationClassName="pt.iscte.es1.reader.CheckForFalses"/>
+    </Class>
+    <Class name="pt.iscte.es1.antiSpamFilter.AntiSpamFilterProblem"
+        x="23" y="66">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="pt.iscte.es1.objects.Message"
+            endpointName="hamList" kind="Simple"/>
+        <Association destinationClassName="pt.iscte.es1.objects.Message"
+            endpointName="spamList" kind="Simple"/>
+        <Communication destinationClassName="pt.iscte.es1.objects.Rule"/>
+    </Class>
+    <Class name="pt.iscte.es1.resultcompiler.TexToPDFCompiler" x="921" y="93">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+</ClassDiagram>

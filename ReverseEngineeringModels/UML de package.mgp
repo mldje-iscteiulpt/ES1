@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PackageAnalysis>
+    <Package name="pt.iscte.es1.antiSpamFilter" x="290" y="362">
+        <DependencyLink destination="pt.iscte.es1.resultcompiler"/>
+        <DependencyLink destination="pt.iscte.es1.objects"/>
+    </Package>
+    <Package name="pt.iscte.es1.antiSpamFilterGUI" x="531" y="34">
+        <DependencyLink destination="pt.iscte.es1.tabledata"/>
+        <DependencyLink destination="pt.iscte.es1.antiSpamFilter"/>
+        <DependencyLink destination="pt.iscte.es1.reader"/>
+    </Package>
+    <Package name="pt.iscte.es1.main" x="696" y="187">
+        <DependencyLink destination="pt.iscte.es1.antiSpamFilterGUI"/>
+    </Package>
+    <Package name="pt.iscte.es1.objects" x="14" y="131"/>
+    <Package name="pt.iscte.es1.reader" x="141" y="56">
+        <DependencyLink destination="pt.iscte.es1.objects"/>
+    </Package>
+    <Package name="pt.iscte.es1.resultcompiler" x="294" y="14"/>
+    <Package name="pt.iscte.es1.tabledata" x="553" y="336">
+        <DependencyLink destination="pt.iscte.es1.objects"/>
+        <DependencyLink destination="pt.iscte.es1.reader"/>
+        <DependencyLink destination="pt.iscte.es1.antiSpamFilterGUI"/>
+    </Package>
+    <Package name="pt.iscte.es1.tests" x="30" y="361">
+        <DependencyLink destination="pt.iscte.es1.objects"/>
+        <DependencyLink destination="pt.iscte.es1.antiSpamFilter"/>
+        <DependencyLink destination="pt.iscte.es1.reader"/>
+        <DependencyLink destination="pt.iscte.es1.antiSpamFilterGUI"/>
+    </Package>
+</PackageAnalysis>

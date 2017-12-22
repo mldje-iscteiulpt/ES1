@@ -1,54 +1,63 @@
-package pt.antiSpamFilterGUI;
+package pt.iscte.es1.antiSpamFilterGUI;
 
 import java.awt.CardLayout;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import pt.reader.DataReader;
-import pt.reader.FileChooser;
+
+import pt.iscte.es1.reader.DataReader;
+import pt.iscte.es1.reader.FileChooser;
 
 @SuppressWarnings("serial")
 public class AntiSpamFilterMenu extends JFrame {
 
+	/** Campo de texto que indica path para o ficheiro rules.cf ou semelhante que contenha as regras */
 	private JTextField textFieldRules; 
+	/** Campo de texto que indica path para o ficheiro ham.log ou semelhante que contenha o ham */
 	private JTextField textFieldHam; 
+	/** Campo de texto que indica path para o ficheiro spam.log ou semelhante que contenha o spam */
 	private JTextField textFieldSpam;
+	/** String que contÃ©m path para o ficheiro rules.cf ou semelhante que contenha as regras */
 	private static String rulesFile; 
+	/** String que contÃ©m path para o ficheiro ham.log ou semelhante que contenha o ham */
 	private static String hamFile; 
+	/** String que contÃ©m path para o ficheiro spam.log ou semelhante que contenha o spam */
 	private static String spamFile;
-	
-	private static DataReader datareader;
+	/** VariÃ¡vel estÃ¡tica de acesso a classe DataReader que permite a leitura de ficheiros de regras, de ham e de spam 
+	 * e armazenamento dos mesmos */
+	static DataReader dataReader;
+	/** Lista que contém os botões da interface gráfica do menú principal */
+	private List<JButton> menuPrincipal;
 
 	/**
-	 * Iniciar a aplicação.
+	 * Classe responsÃ¡vel por iniciar a interface grÃ¡fico da aplicaÃ§Ã£o. Esta inicia-se pelo menÃº de seleÃ§Ã£o dos ficheiros rules.cf,
+	 * ham.log e spam.log. Ã‰ possÃ­vel selecionar a configuraÃ§Ã£o manual ou automÃ¡tica do filtro anti-spam ou sair da aplicaÃ§Ã£o.
+	 * A classe contÃ©m os mÃ©todos que inicializam a frame e que adicionam os diversos componentes a essa frame (nomeadamente os botÃµes para
+	 * poder localizar os ficheiros, os campos de texto onde se apresenta o path desses mesmos ficheiros, os botÃµes para iniciar a
+	 * configuraÃ§Ã£o manual ou automÃ¡tica e o botÃ£o de saÃ­da do programa), bem como os mÃ©todos para obter a path para os trÃªs ficheiros mencionados
+	 * anteriormente.
+	 * 
+	 * @author ES1-2017-IC2-82
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AntiSpamFilterMenu window = new AntiSpamFilterMenu();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
-	 * Criar a aplicação.
+	 * Criar o menÃº principal da aplicaÃ§Ã£o.
 	 */
 	public AntiSpamFilterMenu() {
+		menuPrincipal = new ArrayList<JButton>();
 		initialize();
 		setVisible(true);
 	}
 
 	/**
-	 * Inicializar o conteúdo da frame.
+	 * Inicializar o conteÃºdo da frame.
 	 */
 	private void initialize() {
 		this.setBounds(100, 100, 500, 500);
@@ -56,14 +65,16 @@ public class AntiSpamFilterMenu extends JFrame {
 		this.getContentPane().setLayout(new CardLayout(0, 0));
 		setTitle("Filtragem Anti-Spam");
 
-		datareader = new DataReader();
-
-		addElements();
+		dataReader = new DataReader();
+		
+		if(!(this instanceof MenuSecundario)) {
+			addElements();
+		}
 
 	}
 
 	/**
-	 * Adicionar elementos à frame.
+	 * Adicionar elementos Ã  frame.
 	 */
 
 	public void addElements() {
@@ -71,7 +82,7 @@ public class AntiSpamFilterMenu extends JFrame {
 		this.getContentPane().add(panelMenu, "panel Menu");
 		panelMenu.setLayout(null);
 
-		JLabel lblSelecioneALocalizao = new JLabel("Selecione a localização dos ficheiros:");
+		JLabel lblSelecioneALocalizao = new JLabel("Selecione a localizaï¿½ï¿½o dos ficheiros:");
 		lblSelecioneALocalizao.setBounds(10, 11, 220, 14);
 		panelMenu.add(lblSelecioneALocalizao);
 
@@ -105,12 +116,13 @@ public class AntiSpamFilterMenu extends JFrame {
 		panelMenu.add(textFieldSpam);
 		textFieldSpam.setColumns(10);
 
-		JButton btnConfigManual = new JButton("Configuração Manual");
+		JButton btnConfigManual = new JButton("Configuraï¿½ï¿½o Manual");
 		btnConfigManual.setBounds(10, 291, 455, 23);
 		btnConfigManual.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				if (event.getActionCommand().equals("Configuração Manual")) {
+				if (event.getActionCommand().equals("Configuraï¿½ï¿½o Manual")) {
+					getDefaultFiles();
 					MenuSecundario menumanual = new MenuSecundario("manual");
 					menumanual.setVisible(true);
 					dispose();
@@ -118,13 +130,15 @@ public class AntiSpamFilterMenu extends JFrame {
 			}
 		});
 		panelMenu.add(btnConfigManual);
+		menuPrincipal.add(btnConfigManual);
 
-		JButton btnConfigAuto = new JButton("Configuração Automática");
+		JButton btnConfigAuto = new JButton("Configuraï¿½ï¿½o Automï¿½tica");
 		btnConfigAuto.setBounds(10, 325, 455, 23);
 		btnConfigAuto.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				if (event.getActionCommand().equals("Configuração Automática")) {
+				if (event.getActionCommand().equals("Configuraï¿½ï¿½o Automï¿½tica")) {
+					getDefaultFiles();
 					MenuSecundario menuauto = new MenuSecundario("auto");
 					menuauto.setVisible(true);
 					dispose();
@@ -132,6 +146,7 @@ public class AntiSpamFilterMenu extends JFrame {
 			}
 		});
 		panelMenu.add(btnConfigAuto);
+		menuPrincipal.add(btnConfigAuto);
 
 		JButton btnSair = new JButton("Sair");
 		btnSair.setBounds(10, 359, 455, 23);
@@ -144,6 +159,7 @@ public class AntiSpamFilterMenu extends JFrame {
 			}
 		});
 		panelMenu.add(btnSair);
+		//menuPrincipal.add(btnSair);
 
 		JButton btnBrowseRules = new JButton("Browse");
 		btnBrowseRules.setBounds(376, 71, 89, 23);
@@ -151,10 +167,12 @@ public class AntiSpamFilterMenu extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				FileChooser chooser = new FileChooser("Rules", getParent(), textFieldRules);
-				rulesFile = chooser.choose();
+				//rulesFile = chooser.choose();
+				setRulesFilePath(chooser.choose());
 			}
 		});
 		panelMenu.add(btnBrowseRules);
+		menuPrincipal.add(btnBrowseRules);
 
 		JButton btnBrowseHam = new JButton("Browse");
 		btnBrowseHam.setBounds(376, 123, 89, 23);
@@ -164,10 +182,10 @@ public class AntiSpamFilterMenu extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				FileChooser chooser = new FileChooser("Ham", getParent(), textFieldHam);
-				hamFile = chooser.choose();
+				setHamFilePath(chooser.choose());
 			}
 		});
-		;
+		menuPrincipal.add(btnBrowseHam);
 
 		JButton btnBrowseSpam = new JButton("Browse");
 		btnBrowseSpam.setBounds(376, 176, 89, 23);
@@ -180,21 +198,77 @@ public class AntiSpamFilterMenu extends JFrame {
 				spamFile = chooser.choose();
 			}
 		});
+		menuPrincipal.add(btnBrowseSpam);
 	}
 	
+	
+	public void getDefaultFiles() {
+		if(rulesFile==null && hamFile==null && spamFile==null){
+			rulesFile = "./AntiSpamConfigurationForProfessionalMailbox/rules.cf";
+			spamFile = "./AntiSpamConfigurationForProfessionalMailbox/spam.log";
+			hamFile = "./AntiSpamConfigurationForProfessionalMailbox/ham.log";
+		}
+	}
+
+	/**
+	 * MÃ©todo que devolve instÃ¢ncia do DataReader que Ã© responsÃ¡vel pela leitura dos ficheiros rules.cf,
+	 * ham.log e spam.log, e pelo armazenamento dos dados lidos em estruturas de dados.
+	 * @return DataReader
+	 */
 	public static DataReader getDatareader() {
-		return datareader;
+		return dataReader;
 	}
 	
+	/**
+	 * Devolve path para ficheiro rules.cf
+	 * @return String
+	 */
 	public static String getRulesFile() {
 		return rulesFile;
 	}
+	
+	
+	/**
+	 * MÃ©todo que define qual a path para o ficheiro com as regras
+	 * @param rulesFile - path para o ficheiro das regras
+	 */
+	@SuppressWarnings("static-access")
+	public void setRulesFilePath(String rulesFile) {
+		this.rulesFile = rulesFile;
+	}
+	
+	/**
+	 * Devolve path para ficheiro ham.log
+	 * @return String
+	 */
 	
 	public static String getHamFile() {
 		return hamFile;
 	}
 	
+	/**
+	 * Define path para ficheiro ham.log
+	 * @return String
+	 */
+	
+	public static void setHamFilePath(String hamFilePath) {
+		hamFile = hamFilePath;
+	}
+	
+	/**
+	 * Devolve path para ficheiro spam.log
+	 * @return String
+	 */
+	
 	public static String getSpamFile() {
 		return spamFile;
+	}
+	
+	public static void setSpamFilePath(String spamFilePath) {
+		spamFile = spamFilePath;
+	}
+	
+	public List<JButton> getButtonFromMenuPrincipal(){
+		return menuPrincipal;
 	}
 }
