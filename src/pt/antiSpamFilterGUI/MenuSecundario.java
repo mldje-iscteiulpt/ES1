@@ -79,9 +79,6 @@ public class MenuSecundario extends JFrame {
 
 	public void elements() {
 
-		if (this instanceof BoxPlotWindow) {
-
-		} else {
 			panel = new JPanel();
 			scrollPane = new JScrollPane();
 			labelFP = new JLabel("Falsos Positivos");
@@ -116,8 +113,7 @@ public class MenuSecundario extends JFrame {
 			btnVisualizar.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					BoxPlotWindow boxPlot = new BoxPlotWindow();
-					boxPlot.open();
+					
 				}
 			});
 			btnMenu = new JButton("Retornar ao Menú");
@@ -175,7 +171,7 @@ public class MenuSecundario extends JFrame {
 				btnGerarConfig.setVisible(false);
 			}
 			this.add(panel);
-		}
+		
 	}
 
 	/**
