@@ -23,137 +23,140 @@ import pt.objects.Rule;
 
 public class DataReader {
 	
+
 	/** Mapa que contém as regras e respetivos pesos */
 	private static Map<String,Double> rules;
 	/** Elemento que verifica e contabiliza os Falsos Positivos e Falsos Negativos */
 	private CheckForFalses checker;
 	/** Lista que contém elementos de ham */
-	List<Message> hamList = new ArrayList<Message>();
+	private static List<Message> hamList = new ArrayList<Message>();
 	/** Lista que contém elementos de spam */
-	List<Message> spamList = new ArrayList<Message>();
-	
-	//remover
-	private ArrayList<Rule> rulesList = new ArrayList<Rule>();
-	public ArrayList<Rule> getRulesList(){
-		return rulesList;
-	}
-	
+	private static List<Message> spamList = new ArrayList<Message>();
+
+
+
 	@SuppressWarnings("static-access")
 	public DataReader() {
 		this.rules = new TreeMap<String,Double>();
 	}
-	
+
 	/**
 	 * Obter estrutura de dados com regras e respetivos pesos.
 	 * @return Map<String,Double> - retorna mapa com regras e respetivos pesos
 	 */
-	
+
 	public Map<String,Double> getRules(){
 		return rules;
+
 	}
-	
+
 	/**
 	 * Ler ficheiro com regras (pode incluir os respetivos pesos).
 	 * @param filePathRules - path para o ficheiro com as regras
 	 * @param model - DefaultTableModel que é o modelo da tabela para a qual vão ser carregadas regras e pesos
 	 * @param table - JTable que é tabela que inclui o modelo e onde vão ser inseridas as regras e pesos
 	 */
-	
+
 	public void readRules(String filePathRules, DefaultTableModel model, JTable table) {
 		BufferedReader br = null;
-        try {
-            br = new BufferedReader(new FileReader(filePathRules));
-            String line;
-            while ((line = br.readLine()) != null) {
-            	String parts[] = line.split(" ");
-            	if(parts.length>1) {
-            		model.addRow(new Object[] {parts[0], parts[1]});
-            		addToRules(parts[0],Double.parseDouble(parts[1]));
-            		//System.out.println("Tree: " + parts[0] + " " + rules.get(parts[0]));
-            	}else {
-            		model.addRow(new Object[] {parts[0], 0.0});
-            		addToRules(parts[0], 0.0);
-            	}
-            	table.setModel(model);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (br != null) {
-                    br.close();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
+
+		try {
+			br = new BufferedReader(new FileReader(filePathRules));
+			String line;
+			while ((line = br.readLine()) != null) {
+				String parts[] = line.split(" ");
+				if(parts.length>1) {
+					model.addRow(new Object[] {parts[0], parts[1]});
+					addToRules(parts[0],Double.parseDouble(parts[1]));
+					//System.out.println("Tree: " + parts[0] + " " + rules.get(parts[0]));
+				}else {
+					model.addRow(new Object[] {parts[0], 0.0});
+					addToRules(parts[0], 0.0);
+				}
+				table.setModel(model);
+
+			}
+		} catch (IOException e) {
+			//    e.printStackTrace();
+		} 
+		try {
+			br.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			//			e.printStackTrace();
+		}
+
+
+
 	}
-	
-	
+
+
 	/**
 	 * Ler dados ham ou spam do ficheiro e onde é invocada a avaliação de falsos positivos e falsos negativos.
 	 * @param filePath - String que indica path para o ficheiro
 	 * @param fileType - indica se se trata de ficheiro ham ou spam
 	 */
-	
+
 	public void readInfoFile(String filePath, String fileType) {
 		checker = new CheckForFalses(rules);
-		
+
+
 		BufferedReader br = null;
 		String[] tokens = null;
-        try {
-            br = new BufferedReader(new FileReader(filePath));
-            String line;
-            while ((line = br.readLine()) != null) {
-            	String delims = "[ ]+|\\t";
-            	tokens = line.split(delims);
-            	Message aux = new Message(tokens[0]);
-            	System.out.println("TESTE: " + aux.getName().trim() + aux.getValue());
-            	for(int i = 1; i != tokens.length; i++) {
-//            		String auxName = tokens[i];
-            		Double auxValue = rules.get(tokens[i]);
-            		if(!(auxValue==null)){//!auxName.equals("FM_IS_IT_OUR_ACCOUNT")) {
-            			//feito por causa do FM_IS_IT_OUR_ACCOUNT: está no spam.log mas não está no rules.cf
-            			//System.out.println("Tokens: " + tokens[i]);
-            			aux.getMessages().add(new Rule(tokens[i], rules.get(tokens[i])));
-            		}
-            	}
-            	addMessageToList(aux, fileType);
-            	checker.getFalse(fileType, aux);
-            	
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (br != null) {
-                    br.close();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
+		try {
+			br = new BufferedReader(new FileReader(filePath));
+			String line;
+			while ((line = br.readLine()) != null) {
+				String delims = "[ ]+|\\t";
+				tokens = line.split(delims);
+				Message aux = new Message(tokens[0]);
+				System.out.println("TESTE: " + aux.getName().trim() + aux.getValue());
+				for(int i = 1; i != tokens.length; i++) {
+					//            		String auxName = tokens[i];
+					Double auxValue = rules.get(tokens[i]);
+					if(!(auxValue==null)){//!auxName.equals("FM_IS_IT_OUR_ACCOUNT")) {
+						//feito por causa do FM_IS_IT_OUR_ACCOUNT: está no spam.log mas não está no rules.cf
+						//System.out.println("Tokens: " + tokens[i]);
+						aux.getMessages().add(new Rule(tokens[i], rules.get(tokens[i])));
+					}
+				}
+				addMessageToList(aux, fileType);
+				checker.getFalse(fileType, aux);
+
+			}
+		} catch (IOException e) {
+			//  e.printStackTrace();
+		}
+		try {
+			br.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			//e1.printStackTrace();
+		}	
+
+
 	}
-	
+
+
 	/**
 	 * Retorna o elemento responsável por verificar número de falsos positivos e falsos negativos
 	 * @return CheckForFalses - instância da classe CheckForFalses
 	 */
-	
+
 	public CheckForFalses getChecker() {
 		return checker;
 	}
-	
+
 	/**
 	 * Adicionar à lista de regras com o respetivo peso
 	 * @param nameOfRule - String com o nome da regra
 	 * @param weight - Double com o valor do peso
 	 */
-	
+
 	public void addToRules(String nameOfRule, Double weight) {
 		rules.put(nameOfRule, weight);
 	}
-	
+
 	/**
 	 * Adicionar mensagem à correspondente lista de ham ou de spam
 	 * @param message - identificação da mensagem
@@ -166,5 +169,13 @@ public class DataReader {
 		else if(fileType.equals("spam")) {
 			spamList.add(message);
 		}
+	}
+
+	public List<Message> getHamList(){
+		return hamList;
+	}
+
+	public List<Message> getSpamList(){
+		return spamList;
 	}
 }

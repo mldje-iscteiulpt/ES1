@@ -47,11 +47,21 @@ public class FileChooser {
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("LOG & CF files", "log", "cf");
 		fileChooser.setFileFilter(filter);
 		int returnValue = fileChooser.showOpenDialog(parent);
-		if (returnValue == JFileChooser.APPROVE_OPTION) {
+		if (auxChoose(returnValue)) {
 			File file = fileChooser.getSelectedFile();
 			textField.setText(file.getAbsolutePath());
 			filePath = file.getAbsolutePath().replace("\\", File.separator);
 		}
 		return filePath;
 	}	
+	
+	
+	
+	public boolean auxChoose(int returnValue) {
+		if(returnValue == JFileChooser.APPROVE_OPTION) {
+			return true;
+		}
+		return false;
+	}
+	
 }

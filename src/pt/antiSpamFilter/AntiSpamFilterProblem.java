@@ -1,4 +1,4 @@
-package antiSpamFilter;
+package pt.antiSpamFilter;
 
 import java.util.ArrayList;
 import java.util.List;
