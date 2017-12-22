@@ -1,0 +1,78 @@
+# Sprint retrospective 1
+
+
+O que correu bem?
+
+
+* Tudo o que estava planeado foi implementado, com excepção dos testes unitários.
+* Código desenvolvido foi desenvolvido com clareza.
+* Definição de estruturas de dados de recurso para a lista de regras (TreeMap) pela facilidade em
+obter os pesos dessas regras através de uma chave; para ham e spam definiu-se ArrayList.
+
+
+O que correu menos bem?
+
+
+* Falta de tempo para daily scrum meeting.
+* Falta de clareza entre os membros em relação aos requisitos iniciais.
+* Dificuldades em entender o algoritmo NSGAII.
+* Falta de input dos elementos do grupo relativamente a tomada de decisões relacionadas com o código.
+* Excessivo número de testes unitários em falta.
+
+
+O que vamos fazer para correr melhor?
+
+
+* Aproveitar Daily Scrum Meeting para esclarecer requisitos gradualmente.
+* Vamos tentar conciliar os horários de forma a fazer daily scrum meeting, usar ferramentas online (Slack).
+
+________________
+
+# Sprint retrospective 2
+
+
+O que correu bem?
+
+
+* Tudo o que estava planeado foi implementado, com excepção dos testes unitários.
+* Falta de documentação do código que torna a tarefa de testing mais complexa.
+* Houve maior envolvimento de todos os membros do grupo no projecto.
+* Membros conseguiram reunir-se actualizarem o estado das suas tarefas (daily meeting) e houve maior entreajuda.
+
+
+O que correu menos bem?
+
+
+* Dificuldade em compreender a configuração automática.
+
+
+O que vamos fazer para correr melhor?
+
+
+* Desenvolver testes unitários.
+* Documentar melhor o código (JavaDoc).
+________________
+
+
+# Sprint retrospective 3
+
+
+O que correu bem?
+
+
+* Resolvemos problemas comprometedores na inserção de dados na tabela.
+* Iniciamos o desenvolvimento da configuração automática.
+* A intervenção de elementos de grupo que documentaram e desenvolveram testes unitários que não eram da sua responsabilidade.
+
+
+O que corre menos bem?
+
+
+* Complexidade a nível dos testes de GUI estão a ser difíceis de serem ultrapassados.
+* Dificuldade em manter a equipa motivada para o desenvolvimento dos testes unitários e JavaDoc.
+
+
+O que vamos fazer para correr melhor?
+
+
+* Desenvolver testes unitários em falta.
