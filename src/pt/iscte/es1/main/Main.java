@@ -4,6 +4,10 @@ import java.awt.EventQueue;
 
 import pt.iscte.es1.antiSpamFilterGUI.AntiSpamFilterMenu;
 
+/**
+ * Classe responsável pela execução do programa.
+ */
+
 public class Main {
 
 	public static void main(String[] args) {

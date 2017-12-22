@@ -4,13 +4,18 @@ import java.io.File;
 import java.io.IOException;
 
 public class TexToPDFCompiler {
-	
+
+	/** Diretório latex */
 	private static final String LATEX_DIR = "/latex";
+	/** Designação do ficheiro utilizado na geração do pdf (latex) */
 	private static final String NSGAII_TEX_FILE = "AntiSpamStudy.tex";
+	/** Designação do ficheiro gerado em pdf */
 	private static final String NSGAII_PDF_FILE = "/AntiSpamStudy.pdf";
+	/** Define diretoria onde serão guardados os ficheiros resultantes do algoritmo */
 	private static final String EXPERIMENT_BASE_DIRECTORY = "experimentBaseDirectory";
+	/** Define diretoria onde serão guardados os ficheiros resultantes do algoritmo */
 	private static final String ANTI_SPAM_STUDY = EXPERIMENT_BASE_DIRECTORY + "/AntiSpamStudy";
-	
+
 	/**
 	 * Compila o ficheiro Tex, gerado pelo algoritmo NSGAII, criando o ficheiro PDF.
 	 * @return File
@@ -19,7 +24,7 @@ public class TexToPDFCompiler {
 	public File compile() throws IOException, InterruptedException {
 		final Runtime rt = Runtime.getRuntime();
 		rt.exec("pdflatex " + NSGAII_TEX_FILE, null,
-			new File(System.getProperty("user.dir") + "/" + ANTI_SPAM_STUDY + LATEX_DIR)).waitFor();
+				new File(System.getProperty("user.dir") + "/" + ANTI_SPAM_STUDY + LATEX_DIR)).waitFor();
 		return new File(System.getProperty("user.dir") + "/" + ANTI_SPAM_STUDY + LATEX_DIR + NSGAII_PDF_FILE);
 	}
 }

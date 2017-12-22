@@ -24,7 +24,7 @@ public class FileChooser {
 	private JTextField textField;
 	/** String que contém a path para o ficheiro */
 	private String filePath;
-	
+
 	/**
 	 * Construtor da classe FileChooser
 	 * @param fileName - nome do ficheiro
@@ -36,7 +36,7 @@ public class FileChooser {
 		this.parent = parent;
 		this.textField = textField;
 	}
-	
+
 	/**
 	 * Seleção de ficheiro rules.cf, ham.log ou spam.log
 	 * @return filePath - String com a path para o ficheiro
@@ -54,14 +54,14 @@ public class FileChooser {
 		}
 		return filePath;
 	}	
-	
-	
-	
+
+
+
 	public boolean auxChoose(int returnValue) {
 		if(returnValue == JFileChooser.APPROVE_OPTION) {
 			return true;
 		}
 		return false;
 	}
-	
+
 }

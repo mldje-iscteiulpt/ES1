@@ -66,7 +66,7 @@ public class AntiSpamFilterMenu extends JFrame {
 		setTitle("Filtragem Anti-Spam");
 
 		dataReader = new DataReader();
-		
+
 		if(!(this instanceof MenuSecundario)) {
 			addElements();
 		}
@@ -159,7 +159,6 @@ public class AntiSpamFilterMenu extends JFrame {
 			}
 		});
 		panelMenu.add(btnSair);
-		//menuPrincipal.add(btnSair);
 
 		JButton btnBrowseRules = new JButton("Browse");
 		btnBrowseRules.setBounds(376, 71, 89, 23);
@@ -167,7 +166,6 @@ public class AntiSpamFilterMenu extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				FileChooser chooser = new FileChooser("Rules", getParent(), textFieldRules);
-				//rulesFile = chooser.choose();
 				setRulesFilePath(chooser.choose());
 			}
 		});
@@ -200,8 +198,8 @@ public class AntiSpamFilterMenu extends JFrame {
 		});
 		menuPrincipal.add(btnBrowseSpam);
 	}
-	
-	
+
+
 	public void getDefaultFiles() {
 		if(rulesFile==null && hamFile==null && spamFile==null){
 			rulesFile = "./AntiSpamConfigurationForProfessionalMailbox/rules.cf";
@@ -218,7 +216,7 @@ public class AntiSpamFilterMenu extends JFrame {
 	public static DataReader getDatareader() {
 		return dataReader;
 	}
-	
+
 	/**
 	 * Devolve path para ficheiro rules.cf
 	 * @return String
@@ -226,8 +224,8 @@ public class AntiSpamFilterMenu extends JFrame {
 	public static String getRulesFile() {
 		return rulesFile;
 	}
-	
-	
+
+
 	/**
 	 * Método que define qual a path para o ficheiro com as regras
 	 * @param rulesFile - path para o ficheiro das regras
@@ -236,38 +234,38 @@ public class AntiSpamFilterMenu extends JFrame {
 	public void setRulesFilePath(String rulesFile) {
 		this.rulesFile = rulesFile;
 	}
-	
+
 	/**
 	 * Devolve path para ficheiro ham.log
 	 * @return String
 	 */
-	
+
 	public static String getHamFile() {
 		return hamFile;
 	}
-	
+
 	/**
 	 * Define path para ficheiro ham.log
 	 * @return String
 	 */
-	
+
 	public static void setHamFilePath(String hamFilePath) {
 		hamFile = hamFilePath;
 	}
-	
+
 	/**
 	 * Devolve path para ficheiro spam.log
 	 * @return String
 	 */
-	
+
 	public static String getSpamFile() {
 		return spamFile;
 	}
-	
+
 	public static void setSpamFilePath(String spamFilePath) {
 		spamFile = spamFilePath;
 	}
-	
+
 	public List<JButton> getButtonFromMenuPrincipal(){
 		return menuPrincipal;
 	}

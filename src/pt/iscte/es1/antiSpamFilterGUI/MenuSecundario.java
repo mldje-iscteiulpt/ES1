@@ -79,7 +79,7 @@ public class MenuSecundario extends AntiSpamFilterMenu {
 	private TableDataManipulator tableData;
 	/** Modelo inserido na tabela que apresenta colunas de regras e respetivos pesos */
 	public static DefaultTableModel model;
-	
+
 	List<JButton> menuSecundarioButtons;
 
 	/**
@@ -91,25 +91,16 @@ public class MenuSecundario extends AntiSpamFilterMenu {
 
 		this.typeOfMenu = typeOfMenu;
 		menuSecundarioButtons = new ArrayList<JButton>();
-		
+
 		elements();
 
 		this.setBounds(100, 100, 500, 500);
-//		if ("BoxPlot".equals(typeOfMenu)) {
-//			this.setDefaultCloseOperation(HIDE_ON_CLOSE);
-//		} else {
-			if ("manual".equals(typeOfMenu)) {
-				setTitle("Filtragem Manual Anti-Spam");
-//				btnGerarConfig.setOpaque(false);
-//				btnGerarConfig.setContentAreaFilled(false);
-//				btnGerarConfig.setBorderPainted(false);
-//				btnGerarConfig.setText("");
-//				btnGerarConfig.setEnabled(false);
-			} else if ("auto".equals(typeOfMenu)) {
-				setTitle("Filtragem Automática Anti-Spam");
-			}
-			this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-//		}
+		if ("manual".equals(typeOfMenu)) {
+			setTitle("Filtragem Manual Anti-Spam");
+		} else if ("auto".equals(typeOfMenu)) {
+			setTitle("Filtragem Automática Anti-Spam");
+		}
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.getContentPane().setLayout(new CardLayout(0, 0));
 
 	}
@@ -119,127 +110,119 @@ public class MenuSecundario extends AntiSpamFilterMenu {
 	 */
 
 	public void elements() {
-//
-//		if (this instanceof BoxPlotWindow) {
-//
-//		} else {
-			panel = new JPanel();
-			scrollPane = new JScrollPane();
-			labelFP = new JLabel("Falsos Positivos");
-			labelFN = new JLabel("Falsos Negativos");
-			textFieldFP = new JTextField();
-			textFieldFP.setColumns(10);
-			textFieldFN = new JTextField();
-			textFieldFN.setColumns(10);
-			createTable();
-			tableData = new TableDataManipulator(table, model);
-			btnAvaliarConfig = new JButton("Avaliar configura��o");
-			btnAvaliarConfig.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent event) {
-					if (event.getActionCommand().equals("Avaliar configura��o")) {
-						//DataReader dataReader = AntiSpamFilterMenu.getDatareader();
-						dataReader.readInfoFile(AntiSpamFilterMenu.getHamFile(), "ham");
-						setFP(dataReader.getChecker().getFP());
-						dataReader.readInfoFile(AntiSpamFilterMenu.getSpamFile(), "spam");
-						setFN(dataReader.getChecker().getFN());
-					}
+		panel = new JPanel();
+		scrollPane = new JScrollPane();
+		labelFP = new JLabel("Falsos Positivos");
+		labelFN = new JLabel("Falsos Negativos");
+		textFieldFP = new JTextField();
+		textFieldFP.setColumns(10);
+		textFieldFN = new JTextField();
+		textFieldFN.setColumns(10);
+		createTable();
+		tableData = new TableDataManipulator(table, model);
+		btnAvaliarConfig = new JButton("Avaliar configura��o");
+		btnAvaliarConfig.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				if (event.getActionCommand().equals("Avaliar configura��o")) {
+					dataReader.readInfoFile(AntiSpamFilterMenu.getHamFile(), "ham");
+					setFP(dataReader.getChecker().getFP());
+					dataReader.readInfoFile(AntiSpamFilterMenu.getSpamFile(), "spam");
+					setFN(dataReader.getChecker().getFN());
 				}
-			});
-			menuSecundarioButtons.add(btnAvaliarConfig);
-
-			btnGerarConfig = new JButton("Gerar configura��o");
-			btnGerarConfig.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent arg0) {					
-					AntiSpamFilterProblem problem = new AntiSpamFilterProblem(dataReader.getHamList(), dataReader.getSpamList(), dataReader.getRules());
-						try {
-							useAutomaticConfig(new AntiSpamFilterManager(), new AntiSpamFilterAutomaticConfiguration(problem));
-						} catch (IOException |JMetalException i) {
-						}
-					
-				}
-			});
-			menuSecundarioButtons.add(btnGerarConfig);
-			btnVisualizar = new JButton("Visualizar Gr�fico");
-			btnVisualizar.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					
-				}
-			});
-			menuSecundarioButtons.add(btnVisualizar);
-			btnMenu = new JButton("Retornar ao Menú");
-			btnMenu.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent event) {
-					if (event.getActionCommand().equals("Retornar ao Menú")) {
-						AntiSpamFilterMenu menu = new AntiSpamFilterMenu();
-						dispose();
-					}
-				}
-			});
-			menuSecundarioButtons.add(btnMenu);
-			btnReiniciarPesos = new JButton("Reiniciar Pesos");
-			btnReiniciarPesos.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent event) {
-					if (event.getActionCommand().equals("Reiniciar Pesos")) {
-						tableData.resetValues();
-					}
-				}
-			});
-			menuSecundarioButtons.add(btnReiniciarPesos);
-			btnGuardarPesos = new JButton("Guardar Pesos");
-			btnGuardarPesos.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent event) {
-					if (event.getActionCommand().equals("Guardar Pesos")) {
-						tableData.writeRulesWeights(AntiSpamFilterMenu.getRulesFile(), dataReader.getRules());
-					}
-				}
-			});
-			menuSecundarioButtons.add(btnGuardarPesos);
-			
-			groupLayoutPanel = new GroupLayout(panel);
-			setElementPositions();
-
-			AntiSpamFilterMenu.getDatareader().readRules(AntiSpamFilterMenu.getRulesFile(), model, table); // ler regras
-
-			scrollPane.setViewportView(table);
-			panel.setLayout(groupLayoutPanel);
-			
-			if(typeOfMenu.equals("auto")) {
-				DataReader dataReader = AntiSpamFilterMenu.getDatareader();
-
-				dataReader.readInfoFile(AntiSpamFilterMenu.getHamFile(), "ham");
-				setFP(dataReader.getChecker().getFP());
-				dataReader.readInfoFile(AntiSpamFilterMenu.getSpamFile(), "spam");
-				setFN(dataReader.getChecker().getFN());
 			}
-			
-			if ("auto".equals(typeOfMenu)) {
-				btnGerarConfig.setVisible(true);
+		});
+		menuSecundarioButtons.add(btnAvaliarConfig);
 
-			} else  {
-				btnGerarConfig.setVisible(false);
+		btnGerarConfig = new JButton("Gerar configura��o");
+		btnGerarConfig.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {					
+				AntiSpamFilterProblem problem = new AntiSpamFilterProblem(dataReader.getHamList(), dataReader.getSpamList(), dataReader.getRules());
+				try {
+					useAutomaticConfig(new AntiSpamFilterManager(), new AntiSpamFilterAutomaticConfiguration(problem));
+				} catch (IOException |JMetalException i) {
+				}
+
 			}
-			this.add(panel);
-//		}
+		});
+		menuSecundarioButtons.add(btnGerarConfig);
+		btnVisualizar = new JButton("Visualizar Gr�fico");
+		btnVisualizar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+			}
+		});
+		menuSecundarioButtons.add(btnVisualizar);
+		btnMenu = new JButton("Retornar ao Menú");
+		btnMenu.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				if (event.getActionCommand().equals("Retornar ao Menú")) {
+					AntiSpamFilterMenu menu = new AntiSpamFilterMenu();
+					dispose();
+				}
+			}
+		});
+		menuSecundarioButtons.add(btnMenu);
+		btnReiniciarPesos = new JButton("Reiniciar Pesos");
+		btnReiniciarPesos.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				if (event.getActionCommand().equals("Reiniciar Pesos")) {
+					tableData.resetValues();
+				}
+			}
+		});
+		menuSecundarioButtons.add(btnReiniciarPesos);
+		btnGuardarPesos = new JButton("Guardar Pesos");
+		btnGuardarPesos.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				if (event.getActionCommand().equals("Guardar Pesos")) {
+					tableData.writeRulesWeights(AntiSpamFilterMenu.getRulesFile(), dataReader.getRules());
+				}
+			}
+		});
+		menuSecundarioButtons.add(btnGuardarPesos);
+
+		groupLayoutPanel = new GroupLayout(panel);
+		setElementPositions();
+
+		AntiSpamFilterMenu.getDatareader().readRules(AntiSpamFilterMenu.getRulesFile(), model, table);
+
+		scrollPane.setViewportView(table);
+		panel.setLayout(groupLayoutPanel);
+
+		if(typeOfMenu.equals("auto")) {
+			DataReader dataReader = AntiSpamFilterMenu.getDatareader();
+
+			dataReader.readInfoFile(AntiSpamFilterMenu.getHamFile(), "ham");
+			setFP(dataReader.getChecker().getFP());
+			dataReader.readInfoFile(AntiSpamFilterMenu.getSpamFile(), "spam");
+			setFN(dataReader.getChecker().getFN());
+		}
+
+		if ("auto".equals(typeOfMenu)) {
+			btnGerarConfig.setVisible(true);
+
+		} else  {
+			btnGerarConfig.setVisible(false);
+		}
+		this.add(panel);
 	}
 
 	public void useAutomaticConfig(AntiSpamFilterManager manager,AntiSpamFilterAutomaticConfiguration autoConf) throws IOException {
-	
-			autoConf.generateAutomaticConfig();
-			manager.pickOptimalConfig("default");
-			tableData.writeOptimalDataToTable(manager.generateOptimalWeights("default"));
-			String[] aux = manager.getBestConfig();
-			Double auxFN = Double.parseDouble(aux[0]);
-			Double auxFP = Double.parseDouble(aux[1]);
-			setFN(auxFN.intValue());
-			setFP(auxFP.intValue());
-			//manager.compileBoxPlotFiles();
-		
+
+		autoConf.generateAutomaticConfig();
+		manager.pickOptimalConfig("default");
+		tableData.writeOptimalDataToTable(manager.generateOptimalWeights("default"));
+		String[] aux = manager.getBestConfig();
+		Double auxFN = Double.parseDouble(aux[0]);
+		Double auxFP = Double.parseDouble(aux[1]);
+		setFN(auxFN.intValue());
+		setFP(auxFP.intValue());
 	}
 
 	/**
@@ -251,7 +234,7 @@ public class MenuSecundario extends AntiSpamFilterMenu {
 	public void createTable() {
 		table = new JTable();
 		model = new DefaultTableModel(0, 2) {
-			
+
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				if("manual".equals(typeOfMenu)) {
@@ -320,33 +303,33 @@ public class MenuSecundario extends AntiSpamFilterMenu {
 										.addContainerGap())
 								.addGroup(Alignment.TRAILING,
 										groupLayoutPanel.createSequentialGroup()
-												.addGroup(groupLayoutPanel.createParallelGroup(Alignment.LEADING)
-														.addComponent(labelFP).addComponent(labelFN))
-												.addPreferredGap(ComponentPlacement.RELATED)
-												.addGroup(groupLayoutPanel.createParallelGroup(Alignment.LEADING, false)
-														.addComponent(textFieldFN, 0, 0, Short.MAX_VALUE)
-														.addComponent(textFieldFP, GroupLayout.PREFERRED_SIZE, 44,
-																GroupLayout.PREFERRED_SIZE))
-												.addPreferredGap(ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
-												.addGroup(groupLayoutPanel.createParallelGroup(Alignment.LEADING, false)
-														.addComponent(btnGerarConfig, GroupLayout.DEFAULT_SIZE,
-																GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-														.addComponent(btnAvaliarConfig, GroupLayout.DEFAULT_SIZE,
-																GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-														.addComponent(btnReiniciarPesos, GroupLayout.DEFAULT_SIZE,
-																GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-												.addPreferredGap(ComponentPlacement.RELATED)
-												.addGroup(groupLayoutPanel.createParallelGroup(Alignment.LEADING, false)
-														.addComponent(btnVisualizar, GroupLayout.DEFAULT_SIZE,
-																GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-														.addComponent(btnMenu, GroupLayout.DEFAULT_SIZE,
-																GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-														.addComponent(btnGuardarPesos, GroupLayout.DEFAULT_SIZE,
-																GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-												.addGap(20)))));
+										.addGroup(groupLayoutPanel.createParallelGroup(Alignment.LEADING)
+												.addComponent(labelFP).addComponent(labelFN))
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addGroup(groupLayoutPanel.createParallelGroup(Alignment.LEADING, false)
+												.addComponent(textFieldFN, 0, 0, Short.MAX_VALUE)
+												.addComponent(textFieldFP, GroupLayout.PREFERRED_SIZE, 44,
+														GroupLayout.PREFERRED_SIZE))
+										.addPreferredGap(ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+										.addGroup(groupLayoutPanel.createParallelGroup(Alignment.LEADING, false)
+												.addComponent(btnGerarConfig, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(btnAvaliarConfig, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(btnReiniciarPesos, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addGroup(groupLayoutPanel.createParallelGroup(Alignment.LEADING, false)
+												.addComponent(btnVisualizar, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(btnMenu, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(btnGuardarPesos, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+										.addGap(20)))));
 	}
 
-	
+
 	/**
 	 * Definir número de casos que são falsos positivos
 	 * @param number - número de falsos positivos
@@ -355,7 +338,7 @@ public class MenuSecundario extends AntiSpamFilterMenu {
 	public void setFP(int number) {
 		textFieldFP.setText(number + "");
 	}
-	
+
 	/**
 	 * Definir número de casos que são falsos negativos
 	 * @param number
@@ -364,7 +347,7 @@ public class MenuSecundario extends AntiSpamFilterMenu {
 	public void setFN(int number) {
 		textFieldFN.setText(number + "");
 	}
-	
+
 	public List<JButton> getButtonFromMenuSecundario(){
 		return menuSecundarioButtons;
 	}

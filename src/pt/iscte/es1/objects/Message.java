@@ -11,15 +11,15 @@ import java.util.List;
  */
 
 public class Message {
-	
+
 	/** String que é identificadora da Regra */
 	private String name;
 	/** Valor que resulta da soma de todos os pesos das regras contidas nessa mensagem */
 	private double value;
 	/** Estrutura que contém todas as regras dessa mensagem */
 	private List<Rule> messages;
-	
-	
+
+
 	/**
 	 * Construtor que inicia uma mensagem com o respetivo identificador e um valor inicial de 0.0 respeitante aos pesos das regras. 
 	 * Contém estrutura que abarca as regras verificadas nessa mensagem.
@@ -30,7 +30,7 @@ public class Message {
 		value = 0.0;
 		messages = new ArrayList<Rule>();
 	}
-	
+
 	/**
 	 * Método que devolve nome da regra.
 	 * @return name - String com nome da regra
@@ -38,7 +38,7 @@ public class Message {
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
 	 * Método que devolve o valor resultante da soma dos pesos de todas as regras contidas na mensagem.
 	 * @return value - double que indica somatório dos pesos
@@ -46,7 +46,7 @@ public class Message {
 	public double getValue() {
 		return value;
 	}
-	
+
 	/**
 	 * Método que devolve a lista com as regras contidas na mensagem.
 	 * @return List<Rule> - lista com as regras contidas na mensagem
@@ -54,7 +54,7 @@ public class Message {
 	public List<Rule> getMessages() {
 		return messages;
 	}
-	
+
 	/**
 	 * Método responsável pela soma dos pesos das regras contidas na mensagem.
 	 * @param weight - peso a ser somado ao total de pesos das regras contidas na mensagem
