@@ -18,6 +18,7 @@ O que correu menos bem?
 * Dificuldades em entender o algoritmo NSGAII.
 * Falta de input dos elementos do grupo relativamente a tomada de decisões relacionadas com o código.
 * Excessivo número de testes unitários em falta.
+* Erros na gestão de repositório git: commit de revisões que não eram estáveis para ramo master.
 
 
 O que vamos fazer para correr melhor?
@@ -25,6 +26,7 @@ O que vamos fazer para correr melhor?
 
 * Aproveitar Daily Scrum Meeting para esclarecer requisitos gradualmente.
 * Vamos tentar conciliar os horários de forma a fazer daily scrum meeting, usar ferramentas online (Slack).
+* Desenvolver ramo secundário para revisões/versões que ainda não eram baseline.
 
 ________________
 
@@ -44,6 +46,7 @@ O que correu menos bem?
 
 
 * Dificuldade em compreender a configuração automática.
+* Erros na gestão de repositório git: novos commits realizados no ramo master.
 
 
 O que vamos fazer para correr melhor?
@@ -51,6 +54,7 @@ O que vamos fazer para correr melhor?
 
 * Desenvolver testes unitários.
 * Documentar melhor o código (JavaDoc).
+* Continuar a desenvolver o código em ramo secundário.
 ________________
 
 
