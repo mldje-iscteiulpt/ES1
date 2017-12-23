@@ -5,7 +5,7 @@ import java.awt.EventQueue;
 import pt.iscte.es1.antiSpamFilterGUI.AntiSpamFilterMenu;
 
 /**
- * Classe respons·vel pela execuÁ„o do programa.
+ * Classe respons√°vel pela execu√ß√£o do programa.
  */
 
 public class Main {

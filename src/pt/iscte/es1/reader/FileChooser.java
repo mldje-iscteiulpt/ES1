@@ -10,7 +10,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 /**
  * Classe responsável pela funcionalidade de seleção de ficheiros através do botão browse. Os ficheiros a selecionar são
  * ham.log, spam.log e rules.cf
- * @author mariojose
+ * @author ES1-2017-IC2-82
  *
  */
 
@@ -56,6 +56,11 @@ public class FileChooser {
 	}	
 
 
+	/**
+	 * Método auxiliar referente à escolha de ficheiro em objeto JFileChooser.
+	 * @param returnValue - valor retornado.
+	 * @return boolean - valor de verdadeiro ou falso.
+	 */
 
 	public boolean auxChoose(int returnValue) {
 		if(returnValue == JFileChooser.APPROVE_OPTION) {

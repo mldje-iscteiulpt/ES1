@@ -32,6 +32,10 @@ public class DataReader {
 	/** Lista que contém elementos de spam */
 	private static List<Message> spamList = new ArrayList<Message>();
 
+	
+	/**
+	 * Instanciação da classe DataReader.
+	 */
 	@SuppressWarnings("static-access")
 	public DataReader() {
 		checker = new CheckForFalses(rules);
@@ -40,7 +44,7 @@ public class DataReader {
 
 	/**
 	 * Obter estrutura de dados com regras e respetivos pesos.
-	 * @return Map<String,Double> - retorna mapa com regras e respetivos pesos
+	 * @return Mrules - retorna mapa com regras e respetivos pesos
 	 */
 
 	public Map<String,Double> getRules(){

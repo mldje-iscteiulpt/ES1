@@ -33,7 +33,7 @@ public class AntiSpamFilterMenu extends JFrame {
 	/** Variável estática de acesso a classe DataReader que permite a leitura de ficheiros de regras, de ham e de spam 
 	 * e armazenamento dos mesmos */
 	static DataReader dataReader;
-	/** Lista que cont�m os bot�es da interface gr�fica do men� principal */
+	/** Lista que contém os botões da interface gráfica do menú principal */
 	private List<JButton> menuPrincipal;
 
 	/**
@@ -82,20 +82,20 @@ public class AntiSpamFilterMenu extends JFrame {
 		this.getContentPane().add(panelMenu, "panel Menu");
 		panelMenu.setLayout(null);
 
-		JLabel lblSelecioneALocalizao = new JLabel("Selecione a localiza��o dos ficheiros:");
-		lblSelecioneALocalizao.setBounds(10, 11, 220, 14);
+		JLabel lblSelecioneALocalizao = new JLabel("Selecione a localização dos ficheiros:");
+		lblSelecioneALocalizao.setBounds(10, 11, 250, 14);
 		panelMenu.add(lblSelecioneALocalizao);
 
 		JLabel lblRulescf = new JLabel("rules.cf");
-		lblRulescf.setBounds(10, 75, 46, 14);
+		lblRulescf.setBounds(10, 75, 50, 14);
 		panelMenu.add(lblRulescf);
 
 		JLabel lblHamlog = new JLabel("ham.log");
-		lblHamlog.setBounds(10, 127, 46, 14);
+		lblHamlog.setBounds(10, 127, 60, 14);
 		panelMenu.add(lblHamlog);
 
 		JLabel lblSpamlog = new JLabel("spam.log");
-		lblSpamlog.setBounds(10, 180, 54, 14);
+		lblSpamlog.setBounds(10, 180, 60, 14);
 		panelMenu.add(lblSpamlog);
 
 		textFieldRules = new JTextField();
@@ -116,12 +116,12 @@ public class AntiSpamFilterMenu extends JFrame {
 		panelMenu.add(textFieldSpam);
 		textFieldSpam.setColumns(10);
 
-		JButton btnConfigManual = new JButton("Configura��o Manual");
+		JButton btnConfigManual = new JButton("Configuração Manual");
 		btnConfigManual.setBounds(10, 291, 455, 23);
 		btnConfigManual.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				if (event.getActionCommand().equals("Configura��o Manual")) {
+				if (event.getActionCommand().equals("Configuração Manual")) {
 					getDefaultFiles();
 					MenuSecundario menumanual = new MenuSecundario("manual");
 					menumanual.setVisible(true);
@@ -132,12 +132,12 @@ public class AntiSpamFilterMenu extends JFrame {
 		panelMenu.add(btnConfigManual);
 		menuPrincipal.add(btnConfigManual);
 
-		JButton btnConfigAuto = new JButton("Configura��o Autom�tica");
+		JButton btnConfigAuto = new JButton("Configuração Automática");
 		btnConfigAuto.setBounds(10, 325, 455, 23);
 		btnConfigAuto.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				if (event.getActionCommand().equals("Configura��o Autom�tica")) {
+				if (event.getActionCommand().equals("Configuração Automática")) {
 					getDefaultFiles();
 					MenuSecundario menuauto = new MenuSecundario("auto");
 					menuauto.setVisible(true);
@@ -246,7 +246,7 @@ public class AntiSpamFilterMenu extends JFrame {
 
 	/**
 	 * Define path para ficheiro ham.log
-	 * @return String
+	 * @param hamFilePath - caminho do ficheiro com ham
 	 */
 
 	public static void setHamFilePath(String hamFilePath) {

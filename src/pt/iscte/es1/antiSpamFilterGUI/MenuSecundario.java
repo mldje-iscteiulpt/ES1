@@ -1,8 +1,10 @@
 package pt.iscte.es1.antiSpamFilterGUI;
 
 import java.awt.CardLayout;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -120,11 +122,11 @@ public class MenuSecundario extends AntiSpamFilterMenu {
 		textFieldFN.setColumns(10);
 		createTable();
 		tableData = new TableDataManipulator(table, model);
-		btnAvaliarConfig = new JButton("Avaliar configura��o");
+		btnAvaliarConfig = new JButton("Avaliar configuração");
 		btnAvaliarConfig.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				if (event.getActionCommand().equals("Avaliar configura��o")) {
+				if (event.getActionCommand().equals("Avaliar configuração")) {
 					dataReader.readInfoFile(AntiSpamFilterMenu.getHamFile(), "ham");
 					setFP(dataReader.getChecker().getFP());
 					dataReader.readInfoFile(AntiSpamFilterMenu.getSpamFile(), "spam");
@@ -134,7 +136,7 @@ public class MenuSecundario extends AntiSpamFilterMenu {
 		});
 		menuSecundarioButtons.add(btnAvaliarConfig);
 
-		btnGerarConfig = new JButton("Gerar configura��o");
+		btnGerarConfig = new JButton("Gerar configuração");
 		btnGerarConfig.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {					
@@ -147,11 +149,19 @@ public class MenuSecundario extends AntiSpamFilterMenu {
 			}
 		});
 		menuSecundarioButtons.add(btnGerarConfig);
-		btnVisualizar = new JButton("Visualizar Gr�fico");
+		btnVisualizar = new JButton("Visualizar Gráfico");
 		btnVisualizar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-
+				File file = new File("/experimentBaseDirectory/AntiSpamStudy/R/HV.Boxplot.eps");
+				Desktop desktop = Desktop.getDesktop();
+		        if(file.exists())
+					try {
+						desktop.open(file);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 			}
 		});
 		menuSecundarioButtons.add(btnVisualizar);
@@ -208,10 +218,20 @@ public class MenuSecundario extends AntiSpamFilterMenu {
 			btnGerarConfig.setVisible(true);
 
 		} else  {
-			btnGerarConfig.setVisible(false);
+			btnGerarConfig.setEnabled(false);
+			btnVisualizar.setEnabled(false);
 		}
 		this.add(panel);
 	}
+	
+	/**
+	 * Método referente à configuração automática, onde é gerada esta configuração, é escolhida a configuração óptima,
+	 * e os dados desta são inseridos na tabela.
+	 * 
+	 * @param manager - instância que realiza a gestão da configuração automática.
+	 * @param autoConf - instância da configuração automática.
+	 * @throws IOException - lança excepção.
+	 */
 
 	public void useAutomaticConfig(AntiSpamFilterManager manager,AntiSpamFilterAutomaticConfiguration autoConf) throws IOException {
 
@@ -223,12 +243,12 @@ public class MenuSecundario extends AntiSpamFilterMenu {
 		Double auxFP = Double.parseDouble(aux[1]);
 		setFN(auxFN.intValue());
 		setFP(auxFP.intValue());
+		manager.compileBoxPlotFiles();
 	}
 
 	/**
 	 * Criar conteúdo da tabela e definir quais as colunas editáveis. Na configuração manual só a coluna 1 (pesos) é editável;
 	 * na configuração automática as duas colunas não serão editáveis
-	 * @param table - JTable com regras e respetivos pesos
 	 */
 
 	public void createTable() {
@@ -341,20 +361,24 @@ public class MenuSecundario extends AntiSpamFilterMenu {
 
 	/**
 	 * Definir número de casos que são falsos negativos
-	 * @param number
+	 * @param number - número de falsos negativos.
 	 */
 
 	public void setFN(int number) {
 		textFieldFN.setText(number + "");
 	}
 
+	/**
+	 * Obter os botões utilizados no menú secundário
+	 * @return menuSecundarioButtons - lista de botões do menú secundário.
+	 */
 	public List<JButton> getButtonFromMenuSecundario(){
 		return menuSecundarioButtons;
 	}
 
 	/**
 	 * Redefinição do método equals.
-	 * @param Object - objeto que se pretende comparar com outro objeto
+	 * @param obj - objeto que se pretende comparar com outro objeto
 	 * @return Boolean - informa se objetos comparados são idênticos ou não
 	 */
 

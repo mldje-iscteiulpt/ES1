@@ -11,13 +11,20 @@ import pt.iscte.es1.reader.CheckForFalses;
 import pt.iscte.es1.objects.Message;
 import pt.iscte.es1.objects.Rule;
 
+/**
+ * JUnit responsável por testar classe que verifica falsos positivos e falsos negativos.
+ * @author ES1-2017-IC2-82
+ */
+
 public class CheckForFalsesTest {
 
+	/** Estrutura de dados que contém regras e os respetivos pesos. */
 	Map<String,Double> rulesList = new TreeMap<String,Double>();
-	//String[] tokens = {"a","b","c","d","e","f"};
 	
+	/** Instância que verifica falsos positivos e falsos negativos. */
 	CheckForFalses checker;
 	
+	/** Cria lista com regras. */
 	@Before
 	public void setUp() {
 		rulesList.put("a", 2.0);
@@ -25,6 +32,9 @@ public class CheckForFalsesTest {
 		checker = new CheckForFalses(rulesList);
 	}
 	
+	/** Testa valores de Falsos Positivos e Negativos, verificando se estes são idênticos entre elementos de uma
+	 * lista de regras ou verificando se elementos de instância que verifica falsos positivos e falsos negativos é
+	 * falso positivo e falso negativos. */
 	@Test
 	public void testFalses(){
 		Assert.assertEquals(2.0, rulesList.get("a"), 0.000000001);
@@ -35,11 +45,14 @@ public class CheckForFalsesTest {
 		assertFalse(checker.isFalseNegative(-4.9));
 	}
 	
+	/** Instância elemento responsável pela contagem de falsos positivos e falsos negativos. */
 	@Before
 	public void setUpFalseCounting() {
 		checker = new CheckForFalses(rulesList);
 	}
 	
+	/** Testar valores de Falsos Positivos e Falsos Negativos, verificando se estes são idênticos entre um
+	 * número definido e outro dado pela instância da classe CheckForFalses */
 	@Test
 	public void testFalseValues() {
 		int numberFP = 20;
@@ -50,11 +63,13 @@ public class CheckForFalsesTest {
 		assertEquals(numberFN, checker.getFN());
 	}
 	
+	/** Instância elemento da classe CheckForFalses, passando-lhe uma lista de regras. */
 	@Before
 	public void setUpCalculateFP() {
 		checker = new CheckForFalses(rulesList);
 	}
 	
+	/** Testa o calculo dos valores de Falsos Positivos. */
 	@Test
 	public void testCalculateFP() {
 		String type = "ham";
@@ -89,11 +104,13 @@ public class CheckForFalsesTest {
 		checker.calculateFalseValues(type, message2);
 	}
 	
+	/** Instância elemento da classe CheckForFalses, passando-lhe uma lista de regras. */
 	@Before
 	public void setUpCalculateFN() {
 		checker = new CheckForFalses(rulesList);
 	}
 	
+	/** Testa o calculo dos valores de Falsos Negativos. */
 	@Test
 	public void testCalculateFN() {
 		String type = "spam";

@@ -9,9 +9,9 @@ import org.uma.jmetal.solution.DoubleSolution;
 
 import pt.iscte.es1.objects.Message;
 
-/** Classe que, atravÈs da lista de regras, de ham e de spam gera um Objecto Solution que ser· utilizado na produÁ„o 
- * de uma soluÁ„o optimizada para o problema apresentado.
- * @author Mario
+/** Classe que, atrav√©s da lista de regras, de ham e de spam gera um Objecto Solution que ser√° utilizado na produ√ß√£o 
+ * de uma solu√ß√£o optimizada para o problema apresentado.
+ * @author ES1-2017-IC2-82
  *
  */
 @SuppressWarnings("serial")
@@ -19,15 +19,15 @@ public class AntiSpamFilterProblem extends AbstractDoubleProblem {
 
 	/** Lista contendo ham. */
 	private final List<Message> hamList;
-	/** Lista contendo spam */
+	/** Lista contendo spam. */
 	private final List<Message> spamList;
-	/** Estrutura de dados que contÈm as regras. */
+	/** Estrutura de dados que cont√©m as regras. */
 	private final Map<String,Double> rules;
-	/** Vari·vel que contÈm o n˙mero de regras */
+	/** Vari√°vel que cont√©m o n√∫mero de regras. */
 	private static int numberOfRules;
 
 
-	/** InstanciaÁ„o de objeto da classe AntiSpamFilterProblem
+	/** Instancia√ß√£o de objeto da classe AntiSpamFilterProblem.
 	 * 
 	 * @param hamList - Lista de ham.
 	 * @param spamList - Lista de spam.
@@ -57,7 +57,7 @@ public class AntiSpamFilterProblem extends AbstractDoubleProblem {
 	}
 
 	/**
-	 * MÈtodo respons·vel por avaliar a soluÁ„o gerada e que contabiliza o n˙mero de falsos positivos e
+	 * M√©todo respons√°vel por avaliar a solu√ß√£o gerada e que contabiliza o n√∫mero de falsos positivos e
 	 * falsos negativos.
 	 */
 	@Override

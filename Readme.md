@@ -2,16 +2,17 @@ Turma: IC2
 
 Grupo: 82
 
-Identificação do número, nome e papel de cada membro do grupo:
-73686 - Mário José - Scrum Master
+IdentificaÃ§Ã£o do nÃºmero, nome e papel de cada membro do grupo:
+73686 - MÃ¡rio JosÃ© - Scrum Master
 69106 - Pedro Carneiro - Developer
 74330 - Abdul Karim - Developer
-72773 - Sónia Araújo - Sónia Araújo
+72773 - SÃ³nia AraÃºjo - SÃ³nia AraÃºjo
 
 Variante do projeto desenvolvida: AntiSpamConfigurationForProfessionalMailbox
 
-Link vídeo:
+Link vÃ­deo: 
 
 
 
-Deve ser tido em conta que esta versão (que será substítuida por outra no github) apresenta erros na escrita por alterações dos caracteres ao alterar o projeto em computadores Unix/Windows com diferentes versões para estes caracteres (nomeadamente UTF-8). Essas alterações serão alvo de correção num futuro commit.
+Deve ser tido em conta que esta versÃ£o (que serÃ¡ substÃ­tuida por outra no github) apresenta erros na escrita por alteraÃ§Ãµes dos caracteres ao desenvolver o projeto em computadores Unix/Windows com diferentes versÃµes para estes caracteres (nomeadamente UTF-8). Essas alteraÃ§Ãµes serÃ£o alvo de correÃ§Ã£o num futuro commit.
+Deve tambÃ©m ser tido em conta  que a compilaÃ§Ã£o dos ficheiros .eps e pdf latex foram desenvolvidos com sucesso e que os mesmos foram produzidos, mas que esta compilaÃ§Ã£o nÃ£o ocorreu com sucesso em todas as plataformas (ex. desenvolveu ficheiro .pdf em Mac e nÃ£o em Windows, desenvolveu .eps em Windows e nÃ£o em Mac).

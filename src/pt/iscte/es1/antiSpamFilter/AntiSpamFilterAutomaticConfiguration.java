@@ -22,26 +22,28 @@ import org.uma.jmetal.util.experiment.component.GenerateReferenceParetoSetAndFro
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 
-/** Classe respons·vel pela configuraÁ„o autom·tica do filtro anti-spam.
- * @author Mario
+/** Classe respons√°vel pela configura√ß√£o autom√°tica do filtro anti-spam.
+ * @author ES1-2017-IC2-82
  *
  */
 
 public class AntiSpamFilterAutomaticConfiguration {
-	/** N˙mero de vezes que o algoritmo È executado*/
+	/** N√∫mero de vezes que o algoritmo √© executado */
 	private static final int INDEPENDENT_RUNS = 5 ;
 
-	/** DefiniÁ„o das caracterÌsticas do problema a analisar (exemplo, n˙mero de vari·veis */
+	/** Defini√ß√£o das caracter√≠sticas do problema a analisar (exemplo, n√∫mero de vari√°veis */
 	private AntiSpamFilterProblem problem;
 
-	/** InstanciacaÁ„o da configuraÁ„o autom·tica do filtro anti-spam */
+	/** Instancia√ß√£o da configura√ß√£o autom√°tica do filtro anti-spam 
+	 * @param problem - devolve problema a ser analisado pelo filtro anti-spam autom√°tico.
+	 * */
 	public AntiSpamFilterAutomaticConfiguration(AntiSpamFilterProblem problem) {
 		this.problem = problem;
 	}
 
-	/** MÈtodo respons·vel por gerar a configuraÁ„o autom·tica 
+	/** M√©todo respons√°vel por gerar a configura√ß√£o autom√°tica 
 	 * 
-	 * @throws IOException
+	 * @throws IOException - pode lan√ßar excep√ß√£o referente a Input ou Output
 	 */
 	public void generateAutomaticConfig() throws IOException{
 
@@ -74,7 +76,9 @@ public class AntiSpamFilterAutomaticConfiguration {
 
 	}
 
-	/** MÈtodo respons·vel por gerar a lista com as soluÁıes para o problema analisado. */
+	/** M√©todo respons√°vel por gerar a lista com as solu√ß√µes para o problema analisado. 
+	 * @return algorithm - lista com solu√ß√µes para o problema.
+	 * */
 
 	static List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> configureAlgorithmList(
 			List<ExperimentProblem<DoubleSolution>> problemList) {

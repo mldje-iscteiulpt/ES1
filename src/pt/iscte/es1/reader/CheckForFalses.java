@@ -13,8 +13,8 @@ import pt.iscte.es1.objects.Message;
 
 public class CheckForFalses {
 
+	/** Estrutura de dados onde são armazenadas as regras e os seus respetivos pesos.*/
 	private Map<String,Double> rulesList;
-
 	/** Número de Falsos Positivos */
 	private int FP;
 	/** Número de Falsos Negativos */
@@ -22,9 +22,8 @@ public class CheckForFalses {
 
 	/**
 	 * Construtor da classe responsável por verificar falsos positivos e falsos negativos
-	 * @param rulesList
+	 * @param rulesList - lista de regras
 	 */
-
 	public CheckForFalses(Map<String,Double> rulesList) {
 		this.setRulesList(rulesList);
 		FP = 0;
@@ -34,16 +33,13 @@ public class CheckForFalses {
 	/**
 	 * Calcula o número de falsos positivos e falsos negativos
 	 * @param type - String que indica se é ham ou spam
-	 * @param tokens - String que é linha a analisar
+	 * @param message - Mensagem a analisar
 	 */
-
 	public void calculateFalseValues(String type, Message message) {
-
 		double weightTotal = 0.0;
 		for (int i = 0; i < message.getMessages().size(); i++) {
 			weightTotal+=message.getMessages().get(i).getWeight();
 		}
-
 		if(type.equals("ham")) {
 			if(isFalsePositive(weightTotal)) {
 				FP++;
@@ -57,7 +53,7 @@ public class CheckForFalses {
 	}
 
 	/**
-	 * Avalia se se trata de falso positivo
+	 * Avalia se se trata de falso positivo.
 	 * @param weightTotal - double com o peso total do item do ham
 	 * @return  boolean - indica se é um falso positivo ou não
 	 */
@@ -69,7 +65,7 @@ public class CheckForFalses {
 	}
 
 	/**
-	 * Avalia se se trata de falso negativo
+	 * Avalia se se trata de falso negativo.
 	 * @param weightTotal - double com o peso total do item do spam
 	 * @return  boolean - indica se é um falso negativo ou não
 	 */
@@ -81,7 +77,7 @@ public class CheckForFalses {
 	}
 
 	/**
-	 * Retorna número de falsos positivos encontrados na configuração atual
+	 * Retorna número de falsos positivos encontrados na configuração atual.
 	 * @return int - retorna número de falsos positivos
 	 */
 	public int getFP() {
@@ -89,7 +85,7 @@ public class CheckForFalses {
 	}
 
 	/**
-	 * Retorna número de falsos negativos encontrados na configuração atual
+	 * Retorna número de falsos negativos encontrados na configuração atual.
 	 * @return int - retorna número de falsos negativos
 	 */
 	public int getFN() {
@@ -97,21 +93,25 @@ public class CheckForFalses {
 	}
 
 	/**
-	 * Definir n�mero de Falsos Positivos.
-	 * @param n - n�mero de Falsos Positivos
+	 * Definir número de Falsos Positivos.
+	 * @param n - número de Falsos Positivos
 	 */
 	public void setFP(int n) {
 		this.FP = n;
 	}
 
 	/**
-	 * Definir n�mero de Falsos Negativos.
-	 * @param n - n�mero de Falsos Negativos
+	 * Definir número de Falsos Negativos.
+	 * @param n - número de Falsos Negativos
 	 */
 	public void setFN(int n) {
 		this.FN = n;
 	}
 
+	/**
+	 * Definir a lista de regras e pesos destas.
+	 * @param rulesList - lista de regras e seus respetivos pesos
+	 */
 	public void setRulesList(Map<String,Double> rulesList) {
 		this.rulesList = rulesList;
 	}

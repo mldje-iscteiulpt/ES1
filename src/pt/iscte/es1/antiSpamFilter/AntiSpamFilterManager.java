@@ -7,33 +7,33 @@ import java.io.IOException;
 import pt.iscte.es1.resultcompiler.RToEpsCompiler;
 import pt.iscte.es1.resultcompiler.TexToPDFCompiler;
 
-/** Classe que possui mÈtodos respons·veis pela escolha da configuraÁ„o Ûptima para o tipo de filtro anti-spam
- * (profissional), por gerar os pesos Ûptimos dessa mesma soluÁ„o e por compilar os ficheiros relativos ‡ box plot.
- * @author Mario
+/** Classe que possui m√©todos respons√°veis pela escolha da configura√ß√£o √≥ptima para o tipo de filtro anti-spam
+ * (profissional), por gerar os pesos √≥ptimos dessa mesma solu√ß√£o e por compilar os ficheiros relativos √† BoxPlot.
+ * @author ES1-2017-IC2-82
  *
  */
 
 public class AntiSpamFilterManager {
 
-	/** Path para o ficheiro com os dados de referÍncia relativo ao n˙mero de falsos positivos e falsos negativos
-	 * da soluÁ„o Ûptima.
+	/** Path para o ficheiro com os dados de refer√™ncia relativo ao n√∫mero de falsos positivos e falsos negativos
+	 * da solu√ß√£o √≥ptima.
 	 */
 	private String filePath;
-	/** Path para o ficheiro com os valores dos pesos atribuÌdos a cada regra na configuraÁ„o Ûptima do algoritmo */
+	/** Path para o ficheiro com os valores dos pesos atribu√≠dos a cada regra na configura√ß√£o √≥ptima do algoritmo */
 	private String fileWeightPath;
-	/** Vari·vel que define a linha do ficheiro com a configuraÁ„o Ûptima do algoritmo */
+	/** Vari√°vel que define a linha do ficheiro com a configura√ß√£o √≥ptima do algoritmo */
 	private int lineOfOptimalConfig;
-	/** Array que contÈm a configuraÁ„o ideal do algoritmo relativamente aos seus pesos */
+	/** Array que cont√©m a configura√ß√£o ideal do algoritmo relativamente aos seus pesos */
 	private String[] bestConfig;
 
-	/** InstanciaÁ„o do gestor do filtro anti-spam autom·tico */
+	/** Instancia√ß√£o do gestor do filtro anti-spam autom√°tico */
 	public AntiSpamFilterManager() {
 		lineOfOptimalConfig = 1;
 	}
 
 	/**
-	 * MÈtodo respons·vel por definir qual a configuraÁ„o Ûptima do algoritmo autom·tico.
-	 * @param filePath
+	 * M√©todo respons√°vel por definir qual a configura√ß√£o √≥ptima do algoritmo autom√°tico.
+	 * @param filePath - caminho de ficheiro onde √© definida a configura√ß√£o √≥ptima do algoritmo.
 	 */
 	public void pickOptimalConfig(String filePath) {
 		if (filePath.equals("default")) {
@@ -71,7 +71,7 @@ public class AntiSpamFilterManager {
 	}
 
 	/**
-	 * MÈtodo que gera pesos Ûptimos da configuraÁ„o Ûptima.
+	 * M√©todo que gera pesos √≥ptimos da configura√ß√£o √≥ptima.
 	 * 
 	 * @param fileWeightPath - path para o ficheiro que define os pesos das regras.
 	 * @return String[] - estrutura que armazena os pesos das regras.
@@ -112,7 +112,7 @@ public class AntiSpamFilterManager {
 	}
 
 	/**
-	 * MÈtodo respons·vel pela compilaÁ„o de ficheiros da BoxPlot.
+	 * M√©todo respons√°vel pela compila√ß√£o de ficheiros da BoxPlot.
 	 */
 
 	public void compileBoxPlotFiles() {
@@ -131,7 +131,7 @@ public class AntiSpamFilterManager {
 		}
 	}
 
-	/** MÈtodo respons·vel pela devoluÁ„o da path para o ficheiro.
+	/** M√©todo respons√°vel pela devolu√ß√£o da path para o ficheiro.
 	 * 
 	 * @return String - path para o ficheiro.
 	 */
@@ -141,8 +141,8 @@ public class AntiSpamFilterManager {
 	}
 
 	/**
-	 * MÈtodo que define o caminho para o ficheiro.
-	 * @param filePath
+	 * M√©todo que define o caminho para o ficheiro.
+	 * @param filePath - caminho para o ficheiro.
 	 */
 
 	public void setFilePath(String filePath) {
@@ -150,7 +150,7 @@ public class AntiSpamFilterManager {
 	}
 
 	/**
-	 * MÈtodo que define o caminho para ficheiro com os pesos.
+	 * M√©todo que define o caminho para ficheiro com os pesos.
 	 * @return fileWeightPath - retorna o caminho para o ficheiro.
 	 */
 
@@ -159,7 +159,7 @@ public class AntiSpamFilterManager {
 	}
 
 	/**
-	 * MÈtodo que define o caminho para o ficheiro dos pesos.
+	 * M√©todo que define o caminho para o ficheiro dos pesos.
 	 * @param fileWeightPath - caminho para ficheiro com os pesos.
 	 */
 
@@ -168,8 +168,8 @@ public class AntiSpamFilterManager {
 	}
 
 	/**
-	 * MÈtodo que define a linha com a configuraÁ„o Ûptima gerada pelo algoritmo.
-	 * @param numberOfLine - inteiro que representa o n˙mero da linha com a melhor soluÁ„o.
+	 * M√©todo que define a linha com a configura√ß√£o √≥ptima gerada pelo algoritmo.
+	 * @param numberOfLine - inteiro que representa o n√∫mero da linha com a melhor solu√ß√£o.
 	 */
 
 	private void setLineOfOptimalConfig(int numberOfLine) {
@@ -177,8 +177,8 @@ public class AntiSpamFilterManager {
 	}
 
 	/**
-	 *  MÈtodo que retorna a linha com a configuraÁ„o Ûptima gerada pelo algoritmo.
-	 * @return lineOfOptimalConfig - linha com a configuraÁ„o Ûptima do algoritmo.
+	 *  M√©todo que retorna a linha com a configura√ß√£o √≥ptima gerada pelo algoritmo.
+	 * @return lineOfOptimalConfig - linha com a configura√ß√£o √≥ptima do algoritmo.
 	 */
 
 	public int getLineOfOptimalConfig() {
@@ -186,8 +186,8 @@ public class AntiSpamFilterManager {
 	}
 
 	/**
-	 * MÈtodo que retorna a melhor configuraÁ„o do algoritmo.
-	 * @return String com a melhor configuraÁ„o do algoritmo (com pesos).
+	 * M√©todo que retorna a melhor configura√ß√£o do algoritmo.
+	 * @return String com a melhor configura√ß√£o do algoritmo (com pesos).
 	 */
 
 	public String[] getBestConfig() {

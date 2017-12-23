@@ -49,7 +49,7 @@ public class Message {
 
 	/**
 	 * Método que devolve a lista com as regras contidas na mensagem.
-	 * @return List<Rule> - lista com as regras contidas na mensagem
+	 * @return messages - lista com as regras contidas na mensagem
 	 */
 	public List<Rule> getMessages() {
 		return messages;
