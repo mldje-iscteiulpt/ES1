@@ -7,7 +7,6 @@ import java.io.IOException;
  * Classe referente a compilar de ficheiros de extensão .R, a partir dos quais gera ficheiro .eps contendo
  * BoxPlot referente a dados gerados pelo algoritmo de configuração automática.
  * @author ES1-2017-IC2-82
- *
  */
 
 public class RToEpsCompiler {
