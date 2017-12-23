@@ -30,8 +30,7 @@ public class RToEpsCompiler {
 	 */
 	public File compile() throws IOException, InterruptedException {
 		final Runtime rt = Runtime.getRuntime();
-		rt.exec("/usr/local/bin/Rscript " + "/Users/mariojose/eclipse-workspace/ES1-2017-IC2-82/experimentBaseDirectory/AntiSpamStudy/R/" + NSGAII_R_FILE
-			); 
+		rt.exec("/usr/local/bin/Rscript " + "/experimentBaseDirectory/AntiSpamStudy/R/" + NSGAII_R_FILE); 
 		return new File(ANTI_SPAM_STUDY + R + NSGAII_EPS_FILE);
 	}
 }

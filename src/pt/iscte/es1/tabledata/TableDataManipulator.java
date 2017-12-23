@@ -56,7 +56,11 @@ public class TableDataManipulator {
 			double a;
 			PrintWriter writer = new PrintWriter(new FileWriter(filePathRules));
 			for (int i = 0; i != model.getRowCount(); i++) {
-				a = (double) model.getValueAt(i, 1);
+				if (table.getValueAt(i, 1) instanceof String) {
+					a = Double.parseDouble((String) table.getValueAt(i, 1));
+				} else {
+					a = (double) table.getValueAt(i, 1);
+				}
 				String rule = (String) model.getValueAt(i, 0);
 				rules.put(rule, a);
 				writer.println(rule + " " + a);

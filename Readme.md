@@ -6,7 +6,7 @@ Identificação do número, nome e papel de cada membro do grupo:
 73686 - Mário José - Scrum Master
 69106 - Pedro Carneiro - Developer
 74330 - Abdul Karim - Developer
-72773 - Sónia Araújo - Sónia Araújo
+72773 - Sónia Araújo - Tester
 
 Variante do projeto desenvolvida: AntiSpamConfigurationForProfessionalMailbox
 
